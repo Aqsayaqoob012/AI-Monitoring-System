@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cheating Guard AI</title>
+  <style>
+    :root {
+      --bg-start: #0b1a2c; /* navy blue */
+      --bg-end: #15173D ;  /* dark purple */
+      --text-color: #ffffff;
+      --accent-color: #1f3b6f;
+      --btn-color: #1f3b6f;
+      --btn-hover: #0C2C55;
+      --btn-text: #fff;
+    }
+
+    [data-theme="light"] {
+      --bg-start: #f0f0f0;
+      --bg-end: #d0d0ff;
+      --text-color: #0b1a2c;
+      --accent-color: #4a90e2;
+      --btn-color: #4a90e2;
+      --btn-hover: #1f3b6f;
+      --btn-text: #fff;
+    }
+
+    /* Webkit Browsers: Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 12px; /* scrollbar thickness */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(11,26,44,0.3); /* track color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1f3b6f, #4a90e2); /* gradient thumb */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* Thumb hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4a90e2, #1f3b6f);
+  box-shadow: 0 0 10px rgba(74,144,226,0.5);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4a90e2 rgba(11,26,44,0.3);
+}
+
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
+    }
+
+    body::before {
+      content:"";
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background: linear-gradient(270deg, var(--bg-start), var(--bg-end));
+      background-size: 600% 600%;
+      z-index:-1;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
+    /* Navbar */
+  nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 15px 50px;
+  background: rgba(11,26,44,0.8);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top:0;
+  z-index:10;
+  /* added for animated bottom line */
+  border-bottom: 4px solid transparent;
+  position: relative;
+}
+
+nav::after {
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background: linear-gradient(270deg, #1f3b6f, #4a90e2, #1f3b6f);
+  background-size: 600% 100%;
+  animation: navLineAnim 3s linear infinite;
+  border-radius: 2px;
+}
+
+@keyframes navLineAnim {
+  0%{background-position:0% 0%}
+  50%{background-position:100% 0%}
+  100%{background-position:0% 0%}
+}
+
+    .logo {
+      display:flex;
+      align-items:center;
+      font-weight:bold;
+      font-size: 1.2rem;
+      color: var(--text-color);
+      background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: logoAnim 4s ease-in-out infinite alternate;
+    }
+    .logo img { width:40px; height:40px; margin-right:10px; }
+    @keyframes logoAnim { 0% { background-position:0% } 100% { background-position:100% } }
+
+    .nav-links a {
+      margin-left:30px;
+      color: var(--text-color);
+      text-decoration:none;
+      font-weight:600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent-color); }
+
+    /* Hero Section */
+    .hero {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      height: 60vh;
+      padding: 0 20px;
+     
+    }
+
+    .hero h1 {
+      font-size:2.5rem;
+      color: var(--text-color);
+      margin-bottom:10px;
+      padding: 5px 10px;
+      border-radius:8px;
+       -webkit-text-stroke: 1px #111F35; /* edge line width + color */
+      background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: headingAnim 4s ease-in-out infinite alternate;
+    }
+    @keyframes headingAnim { 0% { background-position:0% } 100% { background-position:100% } }
+
+    .hero p {
+      font-size:1rem;
+      color: var(--text-color);
+      max-width:550px;
+      margin-bottom:30px;
+    }
+
+  .hero button {
+  padding: 10px 25px;       /* chota size */
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--btn-color);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;          /* default me shadow nahi */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect */
+.hero button:hover {
+  background: linear-gradient(135deg, #1f3b6f, #4a90e2); /* gradient appear on hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 10px rgba(74,144,226,0.6); /* shadow appear on hover */
+}
+.hero button:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+  
+
+    @media(max-width:768px){
+      nav { flex-direction: column; }
+      .nav-links { margin-top:10px; }
+    }
+
+
+    .box-container {
+  display: grid;
+  grid-template-columns: repeat(3, 280px); /* har box fixed width */
+  gap: 30px;
+  justify-content: center; /* boxes center align horizontally */
+  padding: 50px 20px;
+}
+
+@media (max-width: 1000px) {
+  .box-container {
+    grid-template-columns: repeat(2, 280px); /* medium screens 2 per row */
+  }
+}
+
+@media (max-width: 700px) {
+  .box-container {
+    grid-template-columns: 1fr; /* mobile 1 per row */
+  }
+}
+
+.glass-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 25px 20px;
+  color: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.glass-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 8px #5B23FF;
+}
+
+.glass-box h3 {
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+  animation: gradientText 3s linear infinite alternate;
+}
+
+.glass-box p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.glass-box ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  color: #aaa;
+}
+
+@keyframes gradientText {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+
+
+/* Section Heading */
+.how-it-works {
+  padding: 50px 20px;
+  color: #fff;
+}
+
+.how-it-works h2 {
+  font-size: 2.2rem;
+  text-align: center;  /* sirf heading center */
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s linear infinite alternate;
+  margin-bottom: 50px;
+}
+
+/* Boxes Container */
+.steps-container {
+  display: flex;
+  flex-direction: column; /* ek line me 1 box */
+  gap: 25px;
+  align-items: center; /* container center, boxes khud left-align */
+  padding: 0 20px;
+}
+
+/* Individual Box */
+.step-box {
+  background: rgba(255,255,255,0.05);
+  border-left: 5px solid #5B23FF;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 15px 30px;
+  color: #fff;
+  width: 80%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;  /* boxes ka text left-aligned */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.step-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 5px #5B23FF;
+}
+
+.step-box .step-num {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #4a90e2;
+}
+
+.step-box h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s linear infinite alternate;
+}
+
+.step-box p {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin: 0;
+}
+
+@keyframes gradientText {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+  </style>
+</head>
+<body data-theme="dark">
+
+  <nav>
+    <div class="logo">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="logo">
+      Cheating Guard AI
+    </div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#uploaded">Uploaded Video</a>
+      <a href="#live">Live Detection</a>
+      <a href="#history">History</a>
+      
+  </nav>
+
+  <section class="hero" id="home">
+    <h1>AI Powered Classroom Monitoring</h1>
+    <p>Upload classroom exam video and get intelligent cheating detection with advanced computer vision.</p>
+    <button onclick="window.location.href='#uploaded'">Upload Video Now</button>
+  </section>
+
+  <section class="box-container">
+  <div class="glass-box">
+    <h3>Person Detection</h3>
+    <p>Detects presence of students in classroom and monitors attendance.</p>
+    <ul>
+      <li>Counts number of persons</li>
+      <li>Tracks movement</li>
+      <li>Alerts if unexpected entry</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Object Detection</h3>
+    <p>Detects objects like phones, books, laptops during the exam.</p>
+    <ul>
+      <li>Phone detection</li>
+      <li>Book detection</li>
+      <li>Laptop detection</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Head Pose Detection</h3>
+    <p>Monitors attention by tracking head orientation and gaze direction.</p>
+    <ul>
+      <li>Detects looking away</li>
+      <li>Focus monitoring</li>
+      <li>Alert if inattentive</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Face Missing / Leaving Frame</h3>
+    <p>Detects if a student leaves the camera frame or face is missing.</p>
+    <ul>
+      <li>Frame exit alert</li>
+      <li>Missing face detection</li>
+      <li>Continuous monitoring</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Audio Monitoring</h3>
+    <p>Monitors ambient audio to detect conversations or multiple voices.</p>
+    <ul>
+      <li>Single/multiple voice detection</li>
+      <li>Suspicious noise alert</li>
+      <li>Real-time monitoring</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Browser Activity</h3>
+    <p>Monitors browser usage during exam for suspicious activity.</p>
+    <ul>
+      <li>Tabs opened</li>
+      <li>Restricted sites detection</li>
+      <li>Activity logging</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Suspicious Activity / Score Engine</h3>
+    <p>Calculates risk score based on all detected anomalies in real-time.</p>
+    <ul>
+      <li>Activity scoring</li>
+      <li>Alerts generation</li>
+      <li>Threshold based notifications</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Evidence & Report Generation</h3>
+    <p>Captures screenshots and generates post-exam report with all metrics.</p>
+    <ul>
+      <li>Screenshot capture of incidents</li>
+      <li>Reports generation</li>
+      <li>Risk summary & activity graph</li>
+    </ul>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <h2>How it Works</h2>
+  <div class="steps-container">
+    <div class="step-box">
+      <div class="step-num">Step 1</div>
+      <h3>Upload Video</h3>
+      <p>Upload your classroom exam video in one click.</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">Step 2</div>
+      <h3>AI Processing</h3>
+      <p>AI analyzes the video using advanced computer vision.</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">Step 3</div>
+      <h3>Review Result</h3>
+      <p>Check detected events, person activity and risk score.</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-num">Step 4</div>
+      <h3>Download & Export</h3>
+      <p>Export report with screenshots, activity summary & graph.</p>
+    </div>
+  </div>
+</section>
+
+
+</body>
+</html>
