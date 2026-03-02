@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cheating Guard AI</title>
-  <style>
-    :root {
+<meta charset="UTF-8">
+<title>Live Deduction System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root {
       --bg-start: #0b1a2c; /* navy blue */
       --bg-end: #15173D ;  /* dark purple */
       --text-color: #ffffff;
@@ -131,20 +131,17 @@ nav::after {
       transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--accent-color); }
-
-    /* Hero Section */
-    .hero {
+/* Hero Section */
+ .hero {
       display:flex;
       flex-direction:column;
       justify-content:center;
       align-items:center;
       text-align:center;
       height: 60vh;
-      padding: 0 20px;
+      padding: 0 20px;}
      
-    }
-
-    .hero h1 {
+.hero h1 {
       font-size:2.5rem;
       color: var(--text-color);
       margin-bottom:10px;
@@ -164,9 +161,18 @@ nav::after {
       max-width:550px;
       margin-bottom:30px;
     }
+    /* Hero buttons container: flex row */
+.hero-buttons {
+  display: flex;
+  justify-content: center;  /* center horizontally */
+  gap: 20px;                /* gap between buttons */
+  flex-wrap: wrap;          /* responsive: wrap on small screens */
+  margin-top: 15px;
+}
 
-  .hero button {
-  padding: 10px 25px;       /* chota size */
+/* Individual buttons */
+.hero button {
+  padding: 10px 25px;
   font-size: 1rem;
   font-weight: 600;
   background: var(--btn-color);
@@ -175,30 +181,76 @@ nav::after {
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: none;          /* default me shadow nahi */
+  box-shadow: none;
   position: relative;
   overflow: hidden;
 }
 
 /* Hover effect */
 .hero button:hover {
-  background: linear-gradient(135deg, #1f3b6f, #4a90e2); /* gradient appear on hover */
+  background: linear-gradient(135deg, #1f3b6f, #4a90e2);
   transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 10px rgba(74,144,226,0.6); /* shadow appear on hover */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 10px rgba(74,144,226,0.6);
 }
+
 .hero button:active {
   transform: scale(0.97);
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);
 }
-  
+
+
 
     @media(max-width:768px){
       nav { flex-direction: column; }
       .nav-links { margin-top:10px; }
     }
 
+/* Video Container */
+#videoContainer { display:flex;
+     justify-content:center;
+      margin-top:20px; }
+#videoFeed { border-radius:12px;
+     box-shadow:0 8px 10px #5B23FF;
+      border: 1px solid #8b67f8;
+      max-width:90%; }
 
-    .box-container {
+/* Boxes */
+.box-container { display:flex; justify-content:space-around; margin-top:30px; flex-wrap:wrap; gap:20px; padding:0 20px;}
+.box { flex:1 1 30%;
+     background: rgba(255,255,255,0.05);
+      border:1px solid rgba(255,255,255,0.15);
+       backdrop-filter:blur(10px);
+        border-radius:12px;
+         padding:15px;
+          max-height:400px; 
+          overflow-y:auto;
+          border-left: 5px solid #5B23FF;
+           transition: transform 0.3s, box-shadow 0.3s;}
+.box:hover { transform: translateY(-5px); box-shadow:0 5px 8px #5B23FF;}
+.box h3 { font-size:1.2rem; margin-bottom:10px; background: linear-gradient(90deg,#1f3b6f,#4a90e2); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation: gradientText 3s linear infinite alternate;}
+.box img { width:100%; margin-bottom:5px;}
+@keyframes gradientText {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+ h1 {
+  text-align: center;          /* Heading center align */
+  font-size: 2.5rem;           /* Thoda bada size */
+  color: #ffffff;               /* White color */
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s linear infinite alternate;
+  margin-bottom: 30px;          /* Neeche space */
+}
+
+/* Gradient animation */
+@keyframes gradientText {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
+
+.box-container {
   display: grid;
   grid-template-columns: repeat(3, 280px); /* har box fixed width */
   gap: 30px;
@@ -217,6 +269,7 @@ nav::after {
     grid-template-columns: 1fr; /* mobile 1 per row */
   }
 }
+
 
 .glass-box {
   background: rgba(255,255,255,0.05);
@@ -261,91 +314,11 @@ nav::after {
   100%{background-position:0% 50%;}
 }
 
-
-
-/* Section Heading */
-.how-it-works {
-  padding: 50px 20px;
-  color: #fff;
-}
-
-.how-it-works h2 {
-  font-size: 2.2rem;
-  text-align: center;  /* sirf heading center */
-  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientText 3s linear infinite alternate;
-  margin-bottom: 50px;
-}
-
-/* Boxes Container */
-.steps-container {
-  display: flex;
-  flex-direction: column; /* ek line me 1 box */
-  gap: 25px;
-  align-items: center; /* container center, boxes khud left-align */
-  padding: 0 20px;
-}
-
-/* Individual Box */
-.step-box {
-  background: rgba(255,255,255,0.05);
-  border-left: 5px solid #5B23FF;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  border-right: 1px solid rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  padding: 15px 30px;
-  color: #fff;
-  width: 80%;
-  height: 100px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: left;  /* boxes ka text left-aligned */
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.step-box:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 5px #5B23FF;
-}
-
-.step-box .step-num {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #4a90e2;
-}
-
-.step-box h3 {
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradientText 3s linear infinite alternate;
-}
-
-.step-box p {
-  font-size: 0.95rem;
-  color: #ccc;
-  margin: 0;
-}
-
-@keyframes gradientText {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
-
-  </style>
+</style>
 </head>
-<body data-theme="dark">
+<body>
 
-  <nav>
+ <nav>
     <div class="logo">
       <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="logo">
       Cheating Guard AI
@@ -358,123 +331,98 @@ nav::after {
       
   </nav>
 
-  <section class="hero" id="home">
-    <h1>AI Powered Classroom Monitoring</h1>
-    <p>Upload classroom exam video and get intelligent cheating detection with advanced computer vision.</p>
-    <button onclick="window.location.href='#uploaded'">Upload Video Now</button>
-  </section>
-
-  <section class="box-container">
-  <div class="glass-box">
-    <h3>Person Detection</h3>
-    <p>Detects presence of students in classroom and monitors attendance.</p>
-    <ul>
-      <li>Counts number of persons</li>
-      <li>Tracks movement</li>
-      <li>Alerts if unexpected entry</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Object Detection</h3>
-    <p>Detects objects like phones, books, laptops during the exam.</p>
-    <ul>
-      <li>Phone detection</li>
-      <li>Book detection</li>
-      <li>Laptop detection</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Head Pose Detection</h3>
-    <p>Monitors attention by tracking head orientation and gaze direction.</p>
-    <ul>
-      <li>Detects looking away</li>
-      <li>Focus monitoring</li>
-      <li>Alert if inattentive</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Face Missing / Leaving Frame</h3>
-    <p>Detects if a student leaves the camera frame or face is missing.</p>
-    <ul>
-      <li>Frame exit alert</li>
-      <li>Missing face detection</li>
-      <li>Continuous monitoring</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Audio Monitoring</h3>
-    <p>Monitors ambient audio to detect conversations or multiple voices.</p>
-    <ul>
-      <li>Single/multiple voice detection</li>
-      <li>Suspicious noise alert</li>
-      <li>Real-time monitoring</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Browser Activity</h3>
-    <p>Monitors browser usage during exam for suspicious activity.</p>
-    <ul>
-      <li>Tabs opened</li>
-      <li>Restricted sites detection</li>
-      <li>Activity logging</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Suspicious Activity / Score Engine</h3>
-    <p>Calculates risk score based on all detected anomalies in real-time.</p>
-    <ul>
-      <li>Activity scoring</li>
-      <li>Alerts generation</li>
-      <li>Threshold based notifications</li>
-    </ul>
-  </div>
-
-  <div class="glass-box">
-    <h3>Evidence & Report Generation</h3>
-    <p>Captures screenshots and generates post-exam report with all metrics.</p>
-    <ul>
-      <li>Screenshot capture of incidents</li>
-      <li>Reports generation</li>
-      <li>Risk summary & activity graph</li>
-    </ul>
+<section class="hero"  id="home">
+  <h1>Real-Time Cheat Deduction Using Your Webcam</h1>
+  <p>Detects persons, phones, and monitors audio in real-time.</p>
+  <div class="hero-buttons">
+    <button onclick="startDetection()">Start Live Deduction</button>
+    <button onclick="stopDetection()">Stop Recording</button>
   </div>
 </section>
 
-<section class="how-it-works">
-  <h2>How it Works</h2>
-  <div class="steps-container">
-    <div class="step-box">
-      <div class="step-num">Step 1</div>
-      <h3>Upload Video</h3>
-      <p>Upload your classroom exam video in one click.</p>
-    </div>
+<div id="videoContainer">
+  <img id="videoFeed" src="{{ url_for('video_feed') }}" width="640" />
+</div>
 
-    <div class="step-box">
-      <div class="step-num">Step 2</div>
-      <h3>AI Processing</h3>
-      <p>AI analyzes the video using advanced computer vision.</p>
-    </div>
+<div class="box-container">
+  <div class="box" id="screenshotsBox"><h3>Screenshots</h3></div>
+  <div class="box" id="audioBox"><h3>Audio Text</h3></div>
+  <div class="box" id="timelineBox"><h3>Timeline Summary</h3></div>
+</div>
+   <h1>Tips for Effective Live Detection</h1>
+<section class="box-container">
+   
+  <div class="glass-box">
+    <h3>Camera Positioning</h3>
+    <p>Place your webcam at eye level for clear face and upper body detection. Avoid tilting the camera.</p>
 
-    <div class="step-box">
-      <div class="step-num">Step 3</div>
-      <h3>Review Result</h3>
-      <p>Check detected events, person activity and risk score.</p>
-    </div>
-
-    <div class="step-box">
-      <div class="step-num">Step 4</div>
-      <h3>Download & Export</h3>
-      <p>Export report with screenshots, activity summary & graph.</p>
-    </div>
   </div>
+
+  <div class="glass-box">
+    <h3>Lighting</h3>
+    <p>Ensure your face and workspace are well-lit. Avoid strong backlight or shadows that can block detection.</p>
+  </div>
+
+  <div class="glass-box">
+    <h3>Privacy</h3>
+    <p>Keep your surroundings free from sensitive personal items. Make sure no other people appear in the camera view.</p>
+  </div>
+
+  <div class="glass-box">
+    <h3>Stable Background</h3>
+    <p>A simple, uncluttered background helps the system detect movements and objects accurately.</p>
+   
+  </div>
+
+  <div class="glass-box">
+    <h3>Stay Centered</h3>
+    <p>Remain in the center of the camera frame for uninterrupted monitoring.</p>
+  </div>
+
+ 
+
+
 </section>
 
+<script>
+let logInterval;
+
+function startDetection(){
+  document.getElementById('videoFeed').style.display='block';
+  document.getElementById('videoFeed').src="/video_feed?" + new Date().getTime();
+  logInterval = setInterval(fetchLogs,500);
+  fetch('/start');
+}
+
+function stopDetection(){
+  clearInterval(logInterval);
+  fetch('/stop').then(()=>fetchLogs());
+  document.getElementById('videoFeed').style.display='none';
+}
+
+function fetchLogs(){
+  fetch('/get_logs').then(res=>res.json()).then(data=>{
+    let screenshotsBox = document.getElementById('screenshotsBox');
+    let audioBox = document.getElementById('audioBox');
+    let timelineBox = document.getElementById('timelineBox');
+
+    screenshotsBox.innerHTML="<h3>Screenshots</h3>";
+    data.screenshots.forEach(s=>{
+      screenshotsBox.innerHTML+=`<img src="${s}">`;
+    });
+
+    audioBox.innerHTML="<h3>Audio Text</h3>";
+    data.audio.forEach(a=>{
+      audioBox.innerHTML+=`<div>${a}</div>`;
+    });
+
+    timelineBox.innerHTML="<h3>Timeline Summary</h3>";
+    data.timeline.forEach(t=>{
+      timelineBox.innerHTML+=`<div>${t}</div>`;
+    });
+  });
+}
+</script>
 
 </body>
 </html>
