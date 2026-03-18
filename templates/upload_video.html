@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Uploaded Video Detection — Cheating Guard AI</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg1:#0b1a2c; --bg2:#15173D;
+  --purple:#7c6ef9; --purple-dim:rgba(124,110,249,0.15);
+  --red:#e8453c; --red-dim:rgba(232,69,60,0.15);
+  --green:#2ecc71; --green-dim:rgba(46,204,113,0.15);
+  --yellow:#f0b429; --yellow-dim:rgba(240,180,41,0.15);
+  --card:rgba(255,255,255,0.04); --border:rgba(255,255,255,0.09);
+  --text:#ffffff; --text-dim:rgba(255,255,255,0.45);
+}
+::-webkit-scrollbar{width:7px}
+::-webkit-scrollbar-track{background:rgba(11,26,44,.3);border-radius:10px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#1f3b6f,#4a90e2);border-radius:10px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;scrollbar-width:thin;scrollbar-color:#4a90e2 rgba(11,26,44,.3)}
+body{background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);min-height:100vh}
+body::before{content:"";position:fixed;inset:0;background:linear-gradient(270deg,var(--bg1),var(--bg2));background-size:600% 600%;z-index:-1;animation:bgAnim 15s ease infinite}
+@keyframes bgAnim{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:rgba(11,26,44,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(270deg,#1f3b6f,var(--purple),#1f3b6f);background-size:400% 100%;animation:navLine 3s linear infinite}
+@keyframes navLine{0%,100%{background-position:0%}50%{background-position:100%}}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.1rem;background:linear-gradient(90deg,#7c6ef9,#4a90e2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo img{width:34px;height:34px}
+.nav-links a{margin-left:22px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--purple)}
+.page{max-width:1200px;margin:0 auto;padding:28px 24px 60px}
+.hero{text-align:center;padding:24px 0 20px}
+.hero h1{font-size:1.9rem;font-weight:700;background:linear-gradient(90deg,var(--purple),#4a90e2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.hero p{color:var(--text-dim);font-size:.92rem;margin-bottom:22px}
+.btn-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{padding:10px 22px;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px}
+.btn-start{background:var(--purple);color:#fff}
+.btn-stop{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--border)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.btn-start:hover{background:#6a5de8}
+.video-wrap{display:flex;justify-content:center;margin:22px 0}
+#videoFeed{border-radius:14px;box-shadow:0 0 32px rgba(124,110,249,.25);border:1px solid rgba(124,110,249,.3);max-width:100%;display:none}
+.results{display:none;margin-top:4px}
+/* --- rest of your CSS from original file stays the same --- */
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">
+    <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="">
+   MonitorIQ
+  </div>
+  <div class="nav-links">
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('live_page') }}">Live Detection</a>
+    <a href="{{ url_for('upload_video_page') }}">Uploaded Video</a>
+    <a href="#history">History</a>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="hero">
+    <h1>Upload Video for Cheat Detection</h1>
+    <p>Analyze videos and monitor head pose, audio, and events</p>
+    <div class="btn-row">
+      <input type="file" id="videoFile" accept="video/*" style="padding:6px 12px;border-radius:6px"/>
+      <button class="btn btn-start" onclick="startSession()">▶ Analyze Video</button>
+    </div>
+  </div>
+
+  <div class="video-wrap">
+    <video id="videoFeed" width="800" height="400" controls style="display:none"></video>
+  </div>
+
+  <div class="results" id="results">
+    <div class="results-head">
+      <h2>Detection Results</h2>
+      <p id="analysisLabel">Upload a video to start analysis...</p>
+    </div>
+
+    <div class="dl-row">
+      <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report_video'">⬇ Download Report (PDF)</button>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-lbl">Total Frames</div>
+        <div class="stat-val" id="statFrames">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Duration</div>
+        <div class="stat-val purple" id="statDuration">0s</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-lbl">Total Alerts</div>
+        <div class="stat-val red" id="statAlerts">0</div>
+      </div>
+    </div>
+
+    <!-- Head Pose Monitoring -->
+    <div class="sec-head">
+      <h3>Head Pose Monitoring</h3>
+      <p>Gaze direction tracking from video</p>
+    </div>
+    <div class="pose-strip">
+      <div class="dir-badge" id="dir-forward">👁 FORWARD</div>
+      <div class="dir-badge" id="dir-left">← LEFT</div>
+      <div class="dir-badge" id="dir-right">RIGHT →</div>
+      <div class="dir-badge" id="dir-up">↑ UP</div>
+      <div class="dir-badge" id="dir-down">↓ DOWN</div>
+      <div class="away-timer" id="awayTimer">Away: 0.0s</div>
+    </div>
+
+    <!-- Evidence Grid -->
+    <div class="sec-head">
+      <h3>Suspicious Activity Evidence</h3>
+      <p>Screenshots and clips captured during suspicious events</p>
+    </div>
+    <div class="ev-grid" id="evGrid">
+      <div class="ev-empty">No evidence captured yet.</div>
+    </div>
+
+    <!-- Student Analysis Table -->
+    <div class="sec-head">
+      <h3>Student Analysis</h3>
+      <p>Behavioral analysis</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Student ID</th>
+            <th>Avg Risk Score</th>
+            <th>Max Risk Score</th>
+            <th>Severity</th>
+            <th>Event Count</th>
+          </tr>
+        </thead>
+        <tbody id="studentTable">
+          <tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:28px">Upload video to see analysis</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Score Events -->
+    <div class="sec-head">
+      <h3>Score Events</h3>
+      <p>Individual suspicious events with scores</p>
+    </div>
+    <div class="score-events" id="scoreEvents">
+      <span style="color:var(--text-dim);font-size:.82rem">No events yet</span>
+    </div>
+
+    <!-- Timeline -->
+    <div class="sec-head">
+      <h3>Event Timeline</h3>
+    </div>
+    <div class="timeline-box" id="timelineBox">
+      <div class="tl-item" style="color:var(--text-dim)">Waiting for video...</div>
+    </div>
+
+    <!-- Audio -->
+    <div class="sec-head">
+      <h3> Audio Detections</h3>
+    </div>
+    <div class="audio-box" id="audioBox">
+      <div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>
+    </div>
+
+  </div><!-- /results -->
+</div><!-- /page -->
+<script>
+let pollInterval = null;
+
+function startSession() {
+  const fileInput = document.getElementById('videoFile');
+  if (!fileInput.files.length) { 
+      alert('Select a video first!'); 
+      return; 
+  }
+
+  const video = document.getElementById('videoFeed');
+  video.src = URL.createObjectURL(fileInput.files[0]);
+  video.style.display = 'block';
+
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('analysisLabel').textContent = 'Analyzing video — please wait...';
+
+  const formData = new FormData();
+  formData.append('video', fileInput.files[0]);
+
+  fetch('/upload_video', { method: 'POST', body: formData })
+    .then(response => {
+        if (!response.ok) throw new Error("Upload failed");
+        return response.json(); // expect JSON from Flask
+    })
+    .then(d => {
+        // Stats
+        document.getElementById('statFrames').textContent = d.total_frames ?? 0;
+        document.getElementById('statDuration').textContent = (d.session_duration ?? 0) + 's';
+        document.getElementById('statAlerts').textContent = d.total_alerts ?? 0;
+        document.getElementById('analysisLabel').textContent = `Analysis complete — Risk Level: ${d.risk_level ?? 'LOW'}`;
+
+        // Head Pose
+        setBadge(d.current_direction ?? 'FORWARD');
+
+        // Evidence Grid
+        const evGrid = document.getElementById('evGrid');
+        const ev = d.evidence ?? [];
+        if (ev.length === 0) evGrid.innerHTML = '<div class="ev-empty">No evidence captured yet.</div>';
+        else evGrid.innerHTML = ev.slice(-12).reverse().map(e => {
+            const src = e.path;
+            const meta = `${e.event} · ${e.time_str}`;
+            return `<div class="ev-card" onclick="openLightbox('${src}','${meta}')">
+                      <img src="${src}" alt="${e.event}"/>
+                      <div class="ev-card-info">
+                        <div class="ev-card-event">${e.event}</div>
+                        <div class="ev-card-time">${e.time_str}</div>
+                      </div>
+                    </div>`;
+        }).join('');
+
+        // Student Table
+        const sa = d.student_analysis ?? {};
+        const [sevLabel, sevClass] = getSeverityBadge(d.risk_level ?? 'LOW');
+        document.getElementById('studentTable').innerHTML = `
+          <tr>
+            <td>Student 1</td>
+            <td>${sa.avg_score ?? 0}</td>
+            <td>${sa.max_score ?? 0}</td>
+            <td><span class="badge ${sevClass}">${sevLabel}</span></td>
+            <td>${sa.event_count ?? 0}</td>
+          </tr>`;
+
+        // Score Events
+        const pillsEl = document.getElementById('scoreEvents');
+        const evts = d.score_events ?? [];
+        pillsEl.innerHTML = evts.length === 0 ? 
+            '<span style="color:var(--text-dim);font-size:.82rem">No events yet</span>' :
+            evts.slice(-15).map(e => `<span class="score-pill">${e.event} +${e.pts} · ${e.time_str}</span>`).join('');
+
+        // Timeline
+        const tlBox = document.getElementById('timelineBox');
+        const tl = d.timeline ?? [];
+        tlBox.innerHTML = tl.length === 0 ? 
+            '<div class="tl-item" style="color:var(--text-dim)">No events yet...</div>' :
+            tl.slice(-50).reverse().map(t => `<div class="tl-item">${t}</div>`).join('');
+
+        // Audio
+        const aBox = document.getElementById('audioBox');
+        const audio = d.audio ?? [];
+        aBox.innerHTML = audio.length === 0 ? 
+            '<div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>' :
+            audio.slice(-10).reverse().map(a => `<div class="audio-item">🎙 ${a}</div>`).join('');
+    })
+    .catch(err => {
+        alert("Error processing video: " + err.message);
+        document.getElementById('analysisLabel').textContent = "Error processing video";
+    });
+}
+
+function setBadge(direction){
+    ['forward','left','right','up','down'].forEach(d => {
+        const el = document.getElementById('dir-'+d);
+        el.className = 'dir-badge';
+        if (d === direction.toLowerCase()) el.classList.add('active-'+d);
+    });
+}
+
+function getSeverityBadge(risk){
+    const map = {
+        'LOW':['NORMAL','badge-low'],
+        'MEDIUM':['MEDIUM','badge-medium'],
+        'HIGH':['HIGH','badge-high']
+    };
+    return map[risk] || ['NORMAL','badge-low'];
+}
+
+function openLightbox(src, meta){
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    document.getElementById('lightboxMeta').textContent = meta;
+    lb.classList.add('active'); 
+    document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('active'); 
+    document.getElementById('lightboxImg').src='';
+    document.body.style.overflow='';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+</script>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="" onclick="event.stopPropagation()"/>
+  <div class="lightbox-meta" id="lightboxMeta"></div>
+  <div class="lightbox-hint">Click anywhere outside to close</div>
+</div>
+
+</body>
+</html>

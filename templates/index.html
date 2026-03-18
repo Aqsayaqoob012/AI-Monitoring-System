@@ -149,12 +149,12 @@ tbody td:first-child{font-weight:600;color:#fff}
 <nav>
   <div class="logo">
     <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="">
-    Cheating Guard AI
+    MonitorIQ
   </div>
   <div class="nav-links">
     <a href="{{ url_for('home') }}">Home</a>
     <a href="{{ url_for('live_page') }}">Live Detection</a>
-    <a href="#uploaded">Uploaded Video</a>
+     <a href="{{ url_for('upload_video_page') }}">Uploaded Video</a>
     <a href="#history">History</a>
   </div>
 </nav>
@@ -179,9 +179,9 @@ tbody td:first-child{font-weight:600;color:#fff}
     </div>
   </div>
 
-  <div class="video-wrap">
-    <img id="videoFeed" src="/video_feed" width="800" style="border-radius:14px; box-shadow:0 0 32px rgba(124,110,249,.25); border:1px solid rgba(124,110,249,.3); max-width:100%;"/>
-  </div>
+<div class="video-wrap">
+  <img id="videoFeed" src="/video_feed" width="800" height="400" style="display:block;"/>
+</div>
 
   <!-- RESULTS -->
   <div class="results" id="results">
@@ -193,8 +193,7 @@ tbody td:first-child{font-weight:600;color:#fff}
 
     <!-- Download buttons -->
     <div class="dl-row">
-      <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report'">⬇ Download Annotated Report (PDF)</button>
-      <button class="btn-dl btn-dl-outline" onclick="window.location.href='/download_json'">📋 Download Report (JSON)</button>
+      <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report'">⬇ Download  Report (PDF)</button>
     </div>
 
     <!-- 3 Stat Boxes -->
@@ -277,7 +276,7 @@ tbody td:first-child{font-weight:600;color:#fff}
 
     <!-- Audio -->
     <div class="sec-head">
-      <h3>🎤 Audio Detections</h3>
+      <h3> Audio Detections</h3>
     </div>
     <div class="audio-box" id="audioBox">
       <div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>
@@ -291,7 +290,11 @@ let pollInterval = null;
 let currentDirection = "FORWARD";
 
 function startSession(){
-  fetch('/start');
+    fetch('/start').then(()=>{
+    // force reload video feed to reconnect
+    const img = document.getElementById('videoFeed');
+    img.src = '/video_feed?' + new Date().getTime(); // cache-buster
+  });
   document.getElementById('results').style.display = 'block';
   document.getElementById('analysisLabel').textContent = 'Session in progress — ' + new Date().toLocaleTimeString();
   pollInterval = setInterval(fetchData, 1000);

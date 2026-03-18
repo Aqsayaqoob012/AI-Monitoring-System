@@ -347,20 +347,20 @@ nav::after {
 <nav> 
   <div class="logo">
     <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="logo">
-    Cheating Guard AI
+    MonitorIQ
   </div>
   <div class="nav-links">
       <a href="{{ url_for('home') }}">Home</a>
       <a href="{{ url_for('live_page') }}">Live Detection</a> <!-- match the Flask route function name -->
-      <a href="#uploaded">Uploaded Video</a>
+       <a href="{{ url_for('upload_video_page') }}">Uploaded Video</a>
       <a href="#history">History</a>
   </div>
 </nav>
 
   <section class="hero" id="home">
-    <h1>AI Powered Classroom Monitoring</h1>
-    <p>Upload classroom exam video and get intelligent cheating detection with advanced computer vision.</p>
-    <button onclick="window.location.href='#uploaded'">Upload Video Now</button>
+    <h1>AI Powered Online Monitoring</h1>
+    <p>AI Powered Online Monitoring is a smart system that continuously tracks real-time data and activities using AI. It detects suspicious patterns or anomalies and provides instant alerts, improving security and efficiency.
+</p>
   </section>
 
   <section class="box-container">
@@ -414,15 +414,6 @@ nav::after {
     </ul>
   </div>
 
-  <div class="glass-box">
-    <h3>Browser Activity</h3>
-    <p>Monitors browser usage during exam for suspicious activity.</p>
-    <ul>
-      <li>Tabs opened</li>
-      <li>Restricted sites detection</li>
-      <li>Activity logging</li>
-    </ul>
-  </div>
 
   <div class="glass-box">
     <h3>Suspicious Activity / Score Engine</h3>
