@@ -25,6 +25,7 @@ model = YOLO("best.pt")
 PHONE_CLASS = 1
 PERSON_CLASS = 3
 
+
 # ── Global State ─────────────────────────────────────────────
 cap              = cv2.VideoCapture(0)
 person_state     = None
@@ -136,11 +137,12 @@ def process_frame(frame, current, frame_num=0, is_video=False):
             num_persons += 1
                 
     
-    # 📱 PHONE (SUPER STRICT 🔥)
-        elif cls == PHONE_CLASS and conf > 0.7:
+        # phone(strict filter)
+        elif cls == PHONE_CLASS and conf > 0.6:
+            # center position check
             box_center_x = int((x1 + x2) / 2)
-    # FINAL FILTER
-            if area < 30000 and abs(box_center_x - center_x) < 150:   # 👈 IMPORTANT (tune kar sakti ho)
+
+            if area < 50000:   # 👈 IMPORTANT (tune kar sakti ho)
                phone_detected = True
 
     
