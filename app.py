@@ -24,7 +24,6 @@ app = Flask(__name__)
 model = YOLO("best.pt")
 PHONE_CLASS = 1
 PERSON_CLASS = 3
-print(class_ids)
 
 # ── Global State ─────────────────────────────────────────────
 cap              = cv2.VideoCapture(0)
@@ -131,17 +130,16 @@ def process_frame(frame, current, frame_num=0, is_video=False):
         x1, y1, x2, y2 = boxes.xyxy[i]
         area = (x2 - x1) * (y2 - y1)
 
-        #person 
-        if cls == PERSON_CLASS and conf > 0.4:
-            if area > 80000:   # ignore small false persons
+    # 👤 PERSON
+        if cls == PERSON_CLASS and conf > 0.5:
+            if area > 100000:   # ignore small false persons
                 num_persons += 1
     
-        # phone(strict filter)
-        elif cls == PHONE_CLASS and conf > 0.6:
-            # center position check
+    # 📱 PHONE (SUPER STRICT 🔥)
+        elif cls == PHONE_CLASS and conf > 0.7:
             box_center_x = int((x1 + x2) / 2)
-            
-            if area < 50000:   # 👈 IMPORTANT (tune kar sakti ho)
+    # FINAL FILTER
+            if area < 30000 and abs(box_center_x - center_x) < 150:   # 👈 IMPORTANT (tune kar sakti ho)
                phone_detected = True
 
     
