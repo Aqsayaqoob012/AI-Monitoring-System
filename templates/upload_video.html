@@ -28,17 +28,40 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .logo img{width:34px;height:34px}
 .nav-links a{margin-left:22px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .2s}
 .nav-links a:hover{color:var(--purple)}
+
 .page{max-width:1200px;margin:0 auto;padding:28px 24px 60px}
 .hero{text-align:center;padding:24px 0 20px}
 .hero h1{font-size:1.9rem;font-weight:700;background:linear-gradient(90deg,var(--purple),#4a90e2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .hero p{color:var(--text-dim);font-size:.92rem;margin-bottom:22px}
-.btn-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;align-items:center}
-.btn{padding:10px 22px;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px}
+
+/* Upload zone */
+.upload-zone{border:2px dashed rgba(124,110,249,.4);border-radius:16px;padding:36px 24px;text-align:center;background:rgba(124,110,249,.04);margin-bottom:22px;transition:border-color .2s,background .2s;cursor:pointer}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--purple);background:var(--purple-dim)}
+.upload-zone input[type="file"]{display:none}
+.upload-zone label{cursor:pointer;display:block}
+.upload-icon{font-size:2.4rem;margin-bottom:10px}
+.upload-text{font-size:.95rem;font-weight:600;color:var(--purple);margin-bottom:5px}
+.upload-sub{font-size:.78rem;color:var(--text-dim)}
+.file-name{margin-top:10px;font-size:.82rem;color:var(--green);font-weight:600}
+
+.btn-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
+.btn{padding:11px 26px;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px}
 .btn-start{background:var(--purple);color:#fff}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
-.btn-start:hover{background:#6a5de8}
+.btn-start:disabled{background:rgba(124,110,249,.3);cursor:not-allowed;transform:none !important}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.btn-start:hover:not(:disabled){background:#6a5de8}
+
+/* Progress bar */
+.progress-wrap{display:none;margin:18px 0;text-align:center}
+.progress-bar-outer{background:rgba(255,255,255,.07);border-radius:10px;height:8px;overflow:hidden;margin-bottom:10px}
+.progress-bar-inner{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--purple),#4a90e2);width:0%;transition:width .4s;animation:progressPulse 1.5s ease-in-out infinite}
+@keyframes progressPulse{0%,100%{opacity:1}50%{opacity:.65}}
+.progress-text{font-size:.82rem;color:var(--text-dim)}
+
+/* Video player */
 .video-wrap{display:flex;justify-content:center;margin:22px 0}
-#videoFeed{border-radius:14px;box-shadow:0 0 32px rgba(124,110,249,.25);border:1px solid rgba(124,110,249,.3);max-width:100%}
+#videoPlayer{border-radius:14px;box-shadow:0 0 32px rgba(124,110,249,.25);border:1px solid rgba(124,110,249,.3);max-width:100%;display:none}
+
 .results{display:none;margin-top:4px}
 .results-head{margin-bottom:22px}
 .results-head h2{font-size:1.55rem;font-weight:700;margin-bottom:5px}
@@ -46,7 +69,10 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .dl-row{display:flex;gap:11px;margin-bottom:26px;flex-wrap:wrap}
 .btn-dl{padding:10px 20px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
 .btn-dl-purple{background:var(--purple);color:#fff}
+.btn-dl-outline{background:transparent;color:#fff;border:1px solid var(--border)}
 .btn-dl-purple:hover{background:#6a5de8;transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,110,249,.35)}
+.btn-dl-outline:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
+
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:30px}
 @media(max-width:650px){.stat-grid{grid-template-columns:1fr}}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 26px;transition:transform .25s,box-shadow .25s}
@@ -56,6 +82,7 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .stat-val{font-size:2.7rem;font-weight:700;color:#fff;line-height:1}
 .stat-val.red{color:var(--red)}
 .stat-val.purple{color:var(--purple)}
+
 .sec-head{margin-bottom:14px}
 .sec-head h3{font-size:1.1rem;font-weight:700;margin-bottom:3px}
 .sec-head p{font-size:.78rem;color:var(--text-dim)}
@@ -66,6 +93,8 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .dir-badge.active-down{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 .dir-badge.active-forward{background:var(--green-dim);border-color:var(--green);color:var(--green)}
 .away-timer{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-dim);margin-left:auto}
+.away-timer.warning{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+
 .ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:30px}
 .ev-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
 .ev-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(91,35,255,.2)}
@@ -74,6 +103,7 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .ev-card-event{font-size:.72rem;font-weight:600;color:var(--purple);text-transform:uppercase;margin-bottom:2px}
 .ev-card-time{font-size:.68rem;color:var(--text-dim)}
 .ev-empty{color:var(--text-dim);font-size:.88rem;padding:24px 0}
+
 .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
 table{width:100%;border-collapse:collapse}
 thead tr{border-bottom:1px solid var(--border)}
@@ -84,63 +114,104 @@ tbody tr:hover{background:rgba(124,110,249,.06)}
 tbody td{padding:13px 20px;font-size:.86rem;color:rgba(255,255,255,.8)}
 tbody td:first-child{font-weight:600;color:#fff}
 .badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.4px}
-.badge-low{background:var(--green-dim);color:var(--green);border:1px solid rgba(46,204,113,.3)}
+.badge-low   {background:var(--green-dim);color:var(--green);border:1px solid rgba(46,204,113,.3)}
 .badge-medium{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(240,180,41,.3)}
-.badge-high{background:var(--red-dim);color:var(--red);border:1px solid rgba(232,69,60,.3)}
+.badge-high  {background:var(--red-dim);color:var(--red);border:1px solid rgba(232,69,60,.3)}
+
 .score-events{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
 .score-pill{padding:6px 14px;border-radius:20px;font-size:.75rem;font-weight:600;background:var(--purple-dim);color:var(--purple);border:1px solid rgba(124,110,249,.3)}
+
 .timeline-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;max-height:280px;overflow-y:auto;margin-bottom:28px}
 .tl-item{font-size:.8rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-dim);font-family:'Courier New',monospace}
 .tl-item:last-child{border:none}
+.tl-warn {color:var(--yellow);font-weight:600}
+.tl-alert{color:var(--red);font-weight:600}
+.tl-pose {color:#4a90e2}
+.tl-audio{color:var(--green)}
+.tl-ss   {color:rgba(255,255,255,.5)}
+
 .audio-box{background:var(--card);border:1px solid rgba(46,204,113,.2);border-radius:14px;padding:16px 18px;max-height:180px;overflow-y:auto}
 .audio-item{font-size:.82rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);color:var(--text-dim)}
 .audio-item:last-child{border:none}
+
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:pointer}
 .lightbox.active{display:flex}
 .lightbox-img{max-width:90vw;max-height:82vh;border-radius:14px;box-shadow:0 0 50px rgba(124,110,249,.5);border:1px solid rgba(124,110,249,.4);cursor:default}
-.lightbox-meta{color:rgba(255,255,255,.65);font-size:.85rem;text-align:center}
-.lightbox-close{position:absolute;top:18px;right:24px;font-size:2.2rem;color:#fff;cursor:pointer;background:none;border:none;opacity:.6;transition:opacity .2s}
+.lightbox-meta{color:rgba(255,255,255,.65);font-size:.85rem;text-align:center;letter-spacing:.3px}
+.lightbox-close{position:absolute;top:18px;right:24px;font-size:2.2rem;color:#fff;cursor:pointer;background:none;border:none;line-height:1;opacity:.6;transition:opacity .2s}
 .lightbox-close:hover{opacity:1}
 .lightbox-hint{position:absolute;bottom:22px;color:rgba(255,255,255,.35);font-size:.78rem}
-input[type="file"]{color:#fff;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;font-size:.88rem}
 </style>
 </head>
 <body>
+
 <nav>
   <div class="logo">
     <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="">
-   MonitorIQ
+    Cheating Guard AI
   </div>
   <div class="nav-links">
     <a href="{{ url_for('home') }}">Home</a>
     <a href="{{ url_for('live_page') }}">Live Detection</a>
-    <a href="{{ url_for('upload_video_page') }}">Uploaded Video</a>
-    <a href="#history">History</a>
+    <a href="{{ url_for('upload_video_page') }}">Upload Video</a>
   </div>
 </nav>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="" onclick="event.stopPropagation()"/>
+  <div class="lightbox-meta" id="lightboxMeta"></div>
+  <div class="lightbox-hint">Click anywhere outside to close</div>
+</div>
+
 <div class="page">
+
+  <!-- HERO -->
   <div class="hero">
     <h1>Upload Video for Cheat Detection</h1>
-    <p>Analyze videos and monitor head pose, audio, and events</p>
-    <div class="btn-row">
-      <input type="file" id="videoFile" accept="video/*" style="padding:6px 12px;border-radius:6px"/>
-      <button class="btn btn-start" onclick="startSession()">▶ Analyze Video</button>
+    <p>Same detection as live mode — YOLO · Head Pose · Audio · Scoring</p>
+  </div>
+
+  <!-- Upload Zone -->
+  <div class="upload-zone" id="uploadZone">
+    <label for="videoFile">
+      <div class="upload-icon">🎬</div>
+      <div class="upload-text">Click to select video or drag & drop</div>
+      <div class="upload-sub">MP4, AVI, MOV, MKV supported</div>
+      <div class="file-name" id="fileName"></div>
+    </label>
+    <input type="file" id="videoFile" accept="video/*" onchange="onFileSelected()"/>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-start" id="analyzeBtn" onclick="startSession()" disabled>▶ Analyze Video</button>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar"></div>
     </div>
+    <div class="progress-text" id="progressText">Processing video — please wait...</div>
   </div>
 
+  <!-- Video Preview -->
   <div class="video-wrap">
-    <video id="videoFeed" width="800" height="400" controls style="display:none"></video>
+    <video id="videoPlayer" width="800" controls></video>
   </div>
 
+  <!-- RESULTS -->
   <div class="results" id="results">
+
     <div class="results-head">
       <h2>Detection Results</h2>
-      <p id="analysisLabel">Upload a video to start analysis...</p>
+      <p id="analysisLabel">Analyzing...</p>
     </div>
 
     <div class="dl-row">
       <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report_video'">⬇ Download Report (PDF)</button>
+      <button class="btn-dl btn-dl-outline" onclick="window.location.href='/download_json'">⬇ Download JSON</button>
     </div>
 
     <div class="stat-grid">
@@ -158,10 +229,10 @@ input[type="file"]{color:#fff;background:var(--card);border:1px solid var(--bord
       </div>
     </div>
 
-    <!-- Head Pose Monitoring -->
+    <!-- Head Pose -->
     <div class="sec-head">
-      <h3>Head Pose Monitoring</h3>
-      <p>Gaze direction tracking from video</p>
+      <h3>Head Pose Summary</h3>
+      <p>Last detected gaze direction from video</p>
     </div>
     <div class="pose-strip">
       <div class="dir-badge" id="dir-forward">👁 FORWARD</div>
@@ -169,22 +240,22 @@ input[type="file"]{color:#fff;background:var(--card);border:1px solid var(--bord
       <div class="dir-badge" id="dir-right">RIGHT →</div>
       <div class="dir-badge" id="dir-up">↑ UP</div>
       <div class="dir-badge" id="dir-down">↓ DOWN</div>
-      <div class="away-timer" id="awayTimer">Away: 0.0s</div>
+      <div class="away-timer" id="awayTimer">Away Events: 0</div>
     </div>
 
-    <!-- Evidence Grid -->
+    <!-- Evidence -->
     <div class="sec-head">
       <h3>Suspicious Activity Evidence</h3>
-      <p>Screenshots and clips captured during suspicious events</p>
+      <p>Screenshots captured during suspicious events in the video</p>
     </div>
     <div class="ev-grid" id="evGrid">
       <div class="ev-empty">No evidence captured yet.</div>
     </div>
 
-    <!-- Student Analysis Table -->
+    <!-- Student Analysis -->
     <div class="sec-head">
       <h3>Student Analysis</h3>
-      <p>Behavioral analysis</p>
+      <p>Behavioral analysis from video</p>
     </div>
     <div class="table-wrap">
       <table>
@@ -213,7 +284,7 @@ input[type="file"]{color:#fff;background:var(--card);border:1px solid var(--bord
     </div>
 
     <!-- Timeline -->
-    <div class="sec-head">
+    <div class="sec-head" style="margin-top:8px">
       <h3>Event Timeline</h3>
     </div>
     <div class="timeline-box" id="timelineBox">
@@ -222,7 +293,7 @@ input[type="file"]{color:#fff;background:var(--card);border:1px solid var(--bord
 
     <!-- Audio -->
     <div class="sec-head">
-      <h3> Audio Detections</h3>
+      <h3>🎤 Audio Detections</h3>
     </div>
     <div class="audio-box" id="audioBox">
       <div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>
@@ -230,139 +301,198 @@ input[type="file"]{color:#fff;background:var(--card);border:1px solid var(--bord
 
   </div><!-- /results -->
 </div><!-- /page -->
+
 <script>
-let pollInterval = null;
+// ── File selection ────────────────────────────────────────────
+function onFileSelected(){
+  const fi   = document.getElementById('videoFile');
+  const btn  = document.getElementById('analyzeBtn');
+  const name = document.getElementById('fileName');
+  if(fi.files.length){
+    name.textContent = '✅ ' + fi.files[0].name;
+    btn.disabled = false;
 
-function startSession() {
-  const fileInput = document.getElementById('videoFile');
-  if (!fileInput.files.length) { 
-      alert('Select a video first!'); 
-      return; 
+    // Preview video locally
+    const player = document.getElementById('videoPlayer');
+    player.src   = URL.createObjectURL(fi.files[0]);
+    player.style.display = 'block';
   }
-
-  const video = document.getElementById('videoFeed');
-  video.src = URL.createObjectURL(fileInput.files[0]);
-  video.style.display = 'block';
-
-  document.getElementById('results').style.display = 'block';
-  document.getElementById('analysisLabel').textContent = 'Analyzing video — please wait...';
-
-  const formData = new FormData();
-  formData.append('video', fileInput.files[0]);
-
-  // Pehle reset karo (live session ka data clear)
-  fetch('/reset').then(() => {
-    fetch('/upload_video', { method: 'POST', body: formData })
-    .then(response => {
-        if (!response.ok) throw new Error("Upload failed");
-        return response.json(); // expect JSON from Flask
-    })
-    .then(d => {
-        // Stats
-        document.getElementById('statFrames').textContent = d.total_frames ?? 0;
-        document.getElementById('statDuration').textContent = (d.session_duration ?? 0) + 's';
-        document.getElementById('statAlerts').textContent = d.total_alerts ?? 0;
-        document.getElementById('analysisLabel').textContent = `Analysis complete — Risk Level: ${d.risk_level ?? 'LOW'}`;
-
-        // Head Pose
-        setBadge(d.current_direction ?? 'FORWARD');
-
-        // Evidence Grid
-        const evGrid = document.getElementById('evGrid');
-        const ev = d.evidence ?? [];
-        if (ev.length === 0) evGrid.innerHTML = '<div class="ev-empty">No evidence captured yet.</div>';
-        else evGrid.innerHTML = ev.slice(-12).reverse().map(e => {
-            const src = e.path;
-            const meta = `${e.event} · ${e.time_str}`;
-            return `<div class="ev-card" onclick="openLightbox('${src}','${meta}')">
-                      <img src="${src}" alt="${e.event}"/>
-                      <div class="ev-card-info">
-                        <div class="ev-card-event">${e.event}</div>
-                        <div class="ev-card-time">${e.time_str}</div>
-                      </div>
-                    </div>`;
-        }).join('');
-
-        // Student Table
-        const sa = d.student_analysis ?? {};
-        const [sevLabel, sevClass] = getSeverityBadge(d.risk_level ?? 'LOW');
-        document.getElementById('studentTable').innerHTML = `
-          <tr>
-            <td>Student 1</td>
-            <td>${sa.avg_score ?? 0}</td>
-            <td>${sa.max_score ?? 0}</td>
-            <td><span class="badge ${sevClass}">${sevLabel}</span></td>
-            <td>${sa.event_count ?? 0}</td>
-          </tr>`;
-
-        // Score Events
-        const pillsEl = document.getElementById('scoreEvents');
-        const evts = d.score_events ?? [];
-        pillsEl.innerHTML = evts.length === 0 ? 
-            '<span style="color:var(--text-dim);font-size:.82rem">No events yet</span>' :
-            evts.slice(-15).map(e => `<span class="score-pill">${e.event} +${e.pts} · ${e.time_str}</span>`).join('');
-
-        // Timeline
-        const tlBox = document.getElementById('timelineBox');
-        const tl = d.timeline ?? [];
-        tlBox.innerHTML = tl.length === 0 ? 
-            '<div class="tl-item" style="color:var(--text-dim)">No events yet...</div>' :
-            tl.slice(-50).reverse().map(t => `<div class="tl-item">${t}</div>`).join('');
-
-        // Audio
-        const aBox = document.getElementById('audioBox');
-        const audio = d.audio ?? [];
-        aBox.innerHTML = audio.length === 0 ? 
-            '<div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>' :
-            audio.slice(-10).reverse().map(a => `<div class="audio-item">🎙 ${a}</div>`).join('');
-    })
-    .catch(err => {
-        alert("Error processing video: " + err.message);
-        document.getElementById('analysisLabel').textContent = "Error processing video";
-    });
-  }); // end reset.then
 }
 
+// Drag & drop support
+const zone = document.getElementById('uploadZone');
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+zone.addEventListener('dragleave', ()  => zone.classList.remove('drag'));
+zone.addEventListener('drop', e => {
+  e.preventDefault();
+  zone.classList.remove('drag');
+  const fi = document.getElementById('videoFile');
+  fi.files = e.dataTransfer.files;
+  onFileSelected();
+});
+
+// ── Start analysis ────────────────────────────────────────────
+function startSession(){
+  const fi = document.getElementById('videoFile');
+  if(!fi.files.length){ alert('Please select a video first!'); return; }
+
+  // Lock UI
+  document.getElementById('analyzeBtn').disabled = true;
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+
+  // Animate progress bar (indeterminate feel)
+  let pct = 0;
+  const bar = document.getElementById('progressBar');
+  const pTxt = document.getElementById('progressText');
+  const fakeProgress = setInterval(() => {
+    pct = Math.min(pct + Math.random() * 3, 90);
+    bar.style.width = pct + '%';
+  }, 400);
+
+  const formData = new FormData();
+  formData.append('video', fi.files[0]);
+
+  // First reset, then upload+process
+  fetch('/reset').then(() => {
+    fetch('/upload_video', { method: 'POST', body: formData })
+      .then(res => {
+        if(!res.ok) throw new Error(`Server error ${res.status}`);
+        return res.json();
+      })
+      .then(d => {
+        clearInterval(fakeProgress);
+        bar.style.width = '100%';
+        pTxt.textContent = 'Analysis complete!';
+        setTimeout(() => {
+          document.getElementById('progressWrap').style.display = 'none';
+          populateResults(d);
+          document.getElementById('results').style.display = 'block';
+          document.getElementById('analyzeBtn').disabled = false;
+        }, 600);
+      })
+      .catch(err => {
+        clearInterval(fakeProgress);
+        document.getElementById('progressWrap').style.display = 'none';
+        document.getElementById('analyzeBtn').disabled = false;
+        alert('Error processing video: ' + err.message);
+      });
+  });
+}
+
+// ── Populate results from JSON ────────────────────────────────
+function populateResults(d){
+  document.getElementById('analysisLabel').textContent =
+    `Analysis complete — Risk Level: ${d.risk_level ?? 'LOW'} · ${new Date().toLocaleString()}`;
+
+  // Stats
+  document.getElementById('statFrames').textContent   = d.total_frames   ?? 0;
+  document.getElementById('statDuration').textContent = (d.session_duration ?? 0) + 's';
+  document.getElementById('statAlerts').textContent   = d.total_alerts    ?? 0;
+
+  // Head pose — show last detected direction
+  setBadge(d.current_direction ?? 'FORWARD');
+  const awayCount = (d.direction_log ?? []).length;
+  const timerEl   = document.getElementById('awayTimer');
+  timerEl.textContent = `Away Events: ${awayCount}`;
+  timerEl.className   = 'away-timer' + (awayCount > 3 ? ' warning' : '');
+
+  // Evidence grid
+  const ev     = (d.evidence ?? []).filter(e => e.type === 'screenshot');
+  const evGrid = document.getElementById('evGrid');
+  if(ev.length === 0){
+    evGrid.innerHTML = '<div class="ev-empty">No evidence captured.</div>';
+  } else {
+    evGrid.innerHTML = ev.slice(-12).reverse().map(e => {
+      const fname = e.path.replace(/\\/g, '/').split('/').pop();
+      const src   = `/evidence/${fname}`;
+      const meta  = `${e.event.replace(/_/g,' ')} · ${e.time_str}${e.direction ? ' · '+e.direction : ''}`;
+      return `<div class="ev-card" onclick="openLightbox('${src}','${meta}')">
+        <img src="${src}" onerror="this.parentElement.style.display='none'" alt="${e.event}"/>
+        <div class="ev-card-info">
+          <div class="ev-card-event">${e.event.replace(/_/g,' ')}</div>
+          <div class="ev-card-time">${e.time_str}${e.direction ? ' · '+e.direction : ''}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Student analysis
+  const sa = d.student_analysis ?? {};
+  const [sevLabel, sevClass] = getSeverityBadge(d.risk_level ?? 'LOW');
+  document.getElementById('studentTable').innerHTML = `
+    <tr>
+      <td>Student 1</td>
+      <td>${sa.avg_score ?? 0}</td>
+      <td>${sa.max_score ?? d.score ?? 0}</td>
+      <td><span class="badge ${sevClass}">${sevLabel}</span></td>
+      <td>${sa.event_count ?? 0}</td>
+    </tr>`;
+
+  // Score event pills
+  const evts    = d.score_events ?? [];
+  const pillsEl = document.getElementById('scoreEvents');
+  pillsEl.innerHTML = evts.length === 0
+    ? '<span style="color:var(--text-dim);font-size:.82rem">No events detected</span>'
+    : evts.slice(-20).map(e =>
+        `<span class="score-pill">${e.event.replace(/_/g,' ')} +${e.pts} · ${e.time_str}</span>`
+      ).join('');
+
+  // Timeline
+  const tl    = d.timeline ?? [];
+  const tlBox = document.getElementById('timelineBox');
+  tlBox.innerHTML = tl.length === 0
+    ? '<div class="tl-item" style="color:var(--text-dim)">No events logged.</div>'
+    : tl.slice(-60).reverse().map(t => {
+        let cls = 'tl-item';
+        if(t.includes('⚠') && t.includes('pts'))           cls += ' tl-warn';
+        else if(t.includes('⚠'))                            cls += ' tl-alert';
+        else if(t.includes('👁') || t.includes('looking'))  cls += ' tl-pose';
+        else if(t.includes('🎤'))                            cls += ' tl-audio';
+        else if(t.includes('📸'))                            cls += ' tl-ss';
+        return `<div class="${cls}">${t}</div>`;
+      }).join('');
+
+  // Audio
+  const audio = d.audio ?? [];
+  const aBox  = document.getElementById('audioBox');
+  aBox.innerHTML = audio.length === 0
+    ? '<div class="audio-item" style="color:var(--text-dim)">No audio detected.</div>'
+    : audio.slice(-10).reverse().map(a =>
+        `<div class="audio-item">🎙 ${a}</div>`
+      ).join('');
+}
+
+// ── Helpers ───────────────────────────────────────────────────
 function setBadge(direction){
-    ['forward','left','right','up','down'].forEach(d => {
-        const el = document.getElementById('dir-'+d);
-        el.className = 'dir-badge';
-        if (d === direction.toLowerCase()) el.classList.add('active-'+d);
-    });
+  ['forward','left','right','up','down'].forEach(d => {
+    const el = document.getElementById('dir-'+d);
+    el.className = 'dir-badge';
+    if(d === direction.toLowerCase()) el.classList.add('active-'+d);
+  });
 }
 
 function getSeverityBadge(risk){
-    const map = {
-        'LOW':['NORMAL','badge-low'],
-        'MEDIUM':['MEDIUM','badge-medium'],
-        'HIGH':['HIGH','badge-high']
-    };
-    return map[risk] || ['NORMAL','badge-low'];
+  const map = {
+    'LOW':    ['NORMAL', 'badge-low'],
+    'MEDIUM': ['MEDIUM', 'badge-medium'],
+    'HIGH':   ['HIGH',   'badge-high'],
+  };
+  return map[risk] || ['NORMAL','badge-low'];
 }
 
 function openLightbox(src, meta){
-    const lb = document.getElementById('lightbox');
-    document.getElementById('lightboxImg').src = src;
-    document.getElementById('lightboxMeta').textContent = meta;
-    lb.classList.add('active'); 
-    document.body.style.overflow='hidden';
+  document.getElementById('lightboxImg').src  = src;
+  document.getElementById('lightboxMeta').textContent = meta;
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 function closeLightbox(){
-    const lb = document.getElementById('lightbox');
-    lb.classList.remove('active'); 
-    document.getElementById('lightboxImg').src='';
-    document.body.style.overflow='';
+  document.getElementById('lightbox').classList.remove('active');
+  document.getElementById('lightboxImg').src = '';
+  document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeLightbox(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
 </script>
-
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="" onclick="event.stopPropagation()"/>
-  <div class="lightbox-meta" id="lightboxMeta"></div>
-  <div class="lightbox-hint">Click anywhere outside to close</div>
-</div>
-
 </body>
 </html>
