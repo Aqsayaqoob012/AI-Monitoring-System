@@ -18,10 +18,42 @@
 ::-webkit-scrollbar{width:7px}
 ::-webkit-scrollbar-track{background:rgba(11,26,44,.3);border-radius:10px}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#1f3b6f,#4a90e2);border-radius:10px}
+
+  .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #333;
+    }
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+        .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 50%; 
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #333;
+    }
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%; /* round shape */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+      border-radius: 50%; /* round shape */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;scrollbar-width:thin;scrollbar-color:#4a90e2 rgba(11,26,44,.3)}
 body{background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);min-height:100vh}
 body::before{content:"";position:fixed;inset:0;background:linear-gradient(270deg,var(--bg1),var(--bg2));background-size:600% 600%;z-index:-1;animation:bgAnim 15s ease infinite}
 @keyframes bgAnim{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+/* NAV */
 nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:rgba(11,26,44,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
 nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(270deg,#1f3b6f,var(--purple),#1f3b6f);background-size:400% 100%;animation:navLine 3s linear infinite}
 @keyframes navLine{0%,100%{background-position:0%}50%{background-position:100%}}
@@ -30,43 +62,34 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .nav-links a{margin-left:22px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .2s}
 .nav-links a:hover{color:var(--purple)}
 
+/* LAYOUT */
 .page{max-width:1200px;margin:0 auto;padding:28px 24px 60px}
+
+/* HERO */
 .hero{text-align:center;padding:24px 0 20px}
 .hero h1{font-size:1.9rem;font-weight:700;background:linear-gradient(90deg,var(--purple),#4a90e2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .hero p{color:var(--text-dim);font-size:.92rem;margin-bottom:22px}
-
-/* Upload zone */
-.upload-zone{border:2px dashed rgba(124,110,249,.4);border-radius:16px;padding:36px 24px;text-align:center;background:rgba(124,110,249,.04);margin-bottom:22px;transition:border-color .2s,background .2s;cursor:pointer}
-.upload-zone:hover,.upload-zone.drag{border-color:var(--purple);background:var(--purple-dim)}
-.upload-zone input[type="file"]{display:none}
-.upload-zone label{cursor:pointer;display:block}
-.upload-icon{font-size:2.4rem;margin-bottom:10px}
-.upload-text{font-size:.95rem;font-weight:600;color:var(--purple);margin-bottom:5px}
-.upload-sub{font-size:.78rem;color:var(--text-dim)}
-.file-name{margin-top:10px;font-size:.82rem;color:var(--green);font-weight:600}
-
-.btn-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
-.btn{padding:11px 26px;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px}
+.btn-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn{padding:10px 22px;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px}
 .btn-start{background:var(--purple);color:#fff}
-.btn-start:disabled{background:rgba(124,110,249,.3);cursor:not-allowed;transform:none !important}
-.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
-.btn-start:hover:not(:disabled){background:#6a5de8}
+.btn-stop{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--border)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.btn-start:hover{background:#6a5de8}
 
-/* Progress bar */
-.progress-wrap{display:none;margin:18px 0;text-align:center}
-.progress-bar-outer{background:rgba(255,255,255,.07);border-radius:10px;height:8px;overflow:hidden;margin-bottom:10px}
-.progress-bar-inner{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--purple),#4a90e2);width:0%;transition:width .4s;animation:progressPulse 1.5s ease-in-out infinite}
-@keyframes progressPulse{0%,100%{opacity:1}50%{opacity:.65}}
-.progress-text{font-size:.82rem;color:var(--text-dim)}
-
-/* Video player */
+/* VIDEO */
 .video-wrap{display:flex;justify-content:center;margin:22px 0}
-#videoPlayer{border-radius:14px;box-shadow:0 0 32px rgba(124,110,249,.25);border:1px solid rgba(124,110,249,.3);max-width:100%;display:none}
+#videoFeed{border-radius:14px;box-shadow:0 0 32px rgba(124,110,249,.25);border:1px solid rgba(124,110,249,.3);max-width:100%;display:none}
 
+/* ═══════════════════════════════
+   DETECTION RESULTS
+═══════════════════════════════ */
 .results{display:none;margin-top:4px}
+
 .results-head{margin-bottom:22px}
 .results-head h2{font-size:1.55rem;font-weight:700;margin-bottom:5px}
 .results-head p{font-size:.82rem;color:var(--text-dim)}
+
+/* Download buttons */
 .dl-row{display:flex;gap:11px;margin-bottom:26px;flex-wrap:wrap}
 .btn-dl{padding:10px 20px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
 .btn-dl-purple{background:var(--purple);color:#fff}
@@ -74,6 +97,7 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .btn-dl-purple:hover{background:#6a5de8;transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,110,249,.35)}
 .btn-dl-outline:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
 
+/* 3 STAT BOXES */
 .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:30px}
 @media(max-width:650px){.stat-grid{grid-template-columns:1fr}}
 .stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 26px;transition:transform .25s,box-shadow .25s}
@@ -84,9 +108,12 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .stat-val.red{color:var(--red)}
 .stat-val.purple{color:var(--purple)}
 
+/* SECTION HEADER */
 .sec-head{margin-bottom:14px}
 .sec-head h3{font-size:1.1rem;font-weight:700;margin-bottom:3px}
 .sec-head p{font-size:.78rem;color:var(--text-dim)}
+
+/* HEAD POSE LIVE STATUS */
 .pose-strip{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
 .dir-badge{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-dim);transition:all .3s}
 .dir-badge.active-left,.dir-badge.active-right{background:var(--red-dim);border-color:var(--red);color:var(--red)}
@@ -96,6 +123,7 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .away-timer{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-dim);margin-left:auto}
 .away-timer.warning{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 
+/* EVIDENCE GRID */
 .ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:30px}
 .ev-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
 .ev-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(91,35,255,.2)}
@@ -105,6 +133,7 @@ nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;ba
 .ev-card-time{font-size:.68rem;color:var(--text-dim)}
 .ev-empty{color:var(--text-dim);font-size:.88rem;padding:24px 0}
 
+/* STUDENT ANALYSIS TABLE */
 .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
 table{width:100%;border-collapse:collapse}
 thead tr{border-bottom:1px solid var(--border)}
@@ -119,9 +148,11 @@ tbody td:first-child{font-weight:600;color:#fff}
 .badge-medium{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(240,180,41,.3)}
 .badge-high  {background:var(--red-dim);color:var(--red);border:1px solid rgba(232,69,60,.3)}
 
+/* SCORE EVENTS */
 .score-events{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
 .score-pill{padding:6px 14px;border-radius:20px;font-size:.75rem;font-weight:600;background:var(--purple-dim);color:var(--purple);border:1px solid rgba(124,110,249,.3)}
 
+/* TIMELINE */
 .timeline-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;max-height:280px;overflow-y:auto;margin-bottom:28px}
 .tl-item{font-size:.8rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-dim);font-family:'Courier New',monospace}
 .tl-item:last-child{border:none}
@@ -131,29 +162,29 @@ tbody td:first-child{font-weight:600;color:#fff}
 .tl-audio{color:var(--green)}
 .tl-ss   {color:rgba(255,255,255,.5)}
 
-.audio-box{background:var(--card);border:1px solid rgba(46,204,113,.2);border-radius:14px;padding:16px 18px;max-height:180px;overflow-y:auto}
+/* AUDIO BOX */
+.audio-box{background:var(--card);border:1px solid var(--border);border:1px solid rgba(46,204,113,.2);border-radius:14px;padding:16px 18px;max-height:180px;overflow-y:auto}
 .audio-item{font-size:.82rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);color:var(--text-dim)}
 .audio-item:last-child{border:none}
 
+/* LIGHTBOX */
 .lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:pointer}
 .lightbox.active{display:flex}
 .lightbox-img{max-width:90vw;max-height:82vh;border-radius:14px;box-shadow:0 0 50px rgba(124,110,249,.5);border:1px solid rgba(124,110,249,.4);cursor:default}
 .lightbox-meta{color:rgba(255,255,255,.65);font-size:.85rem;text-align:center;letter-spacing:.3px}
 .lightbox-close{position:absolute;top:18px;right:24px;font-size:2.2rem;color:#fff;cursor:pointer;background:none;border:none;line-height:1;opacity:.6;transition:opacity .2s}
 .lightbox-close:hover{opacity:1}
-.lightbox-hint{position:absolute;bottom:22px;color:rgba(255,255,255,.35);font-size:.78rem}
-</style>
+.lightbox-hint{position:absolute;bottom:22px;color:rgba(255,255,255,.35);font-size:.78rem}</style>
 </head>
 <body>
-
 <nav>
   <div class="logo">
-    ExamShield AI
+      ExamShield AI
   </div>
   <div class="nav-links">
     <a href="{{ url_for('home') }}">Home</a>
     <a href="{{ url_for('live_page') }}">Live Detection</a>
-    <a href="{{ url_for('upload_video_page') }}">Upload Video</a>
+    <a href="{{ url_for('upload_video_page') }}">Uploaded Video</a>
   </div>
 </nav>
 
@@ -169,50 +200,33 @@ tbody td:first-child{font-weight:600;color:#fff}
 
   <!-- HERO -->
   <div class="hero">
-    <h1>Upload Video for Cheat Detection</h1>
-  </div>
-
-  <!-- Upload Zone -->
-  <div class="upload-zone" id="uploadZone">
-    <label for="videoFile">
-      <div class="upload-icon">🎬</div>
-      <div class="upload-text">Click to select video or drag & drop</div>
-      <div class="upload-sub">MP4, AVI, MOV, MKV supported</div>
-      <div class="file-name" id="fileName"></div>
-    </label>
-    <input type="file" id="videoFile" accept="video/*" onchange="onFileSelected()"/>
-  </div>
-
-  <div class="btn-row">
-    <button class="btn btn-start" id="analyzeBtn" onclick="startSession()" disabled>▶ Analyze Video</button>
-  </div>
-
-  <!-- Progress -->
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-bar-outer">
-      <div class="progress-bar-inner" id="progressBar"></div>
+    <h1>Real-Time Cheat Detection Using Your Webcam</h1>
+    <p>Detects persons, phones, head pose and monitors audio in real-time.</p>
+    <div class="btn-row">
+      <button class="btn btn-start" onclick="startSession()">▶ Start Detection</button>
+      <button class="btn btn-stop"  onclick="stopSession()">⏹ Stop</button>
     </div>
-    <div class="progress-text" id="progressText">Processing video — please wait...</div>
   </div>
 
-  <!-- Video Preview -->
   <div class="video-wrap">
-    <video id="videoPlayer" width="800" controls></video>
+    <img id="videoFeed" src="/video_feed" width="600" style="border-radius:14px; box-shadow:0 0 32px rgba(124,110,249,.25); border:1px solid rgba(124,110,249,.3); max-width:100%; display:block;"/>
   </div>
 
   <!-- RESULTS -->
-  <div class="results" id="results">
+  <div class="results" id="results" style="display:block">
 
     <div class="results-head">
       <h2>Detection Results</h2>
-      <p id="analysisLabel">Analyzing...</p>
+      <p id="analysisLabel">Session in progress...</p>
     </div>
 
+    <!-- Download buttons -->
     <div class="dl-row">
-      <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report_video'">⬇ Download Report (PDF)</button>
-      <button class="btn-dl btn-dl-outline" onclick="window.location.href='/download_json'">⬇ Download JSON</button>
+      <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report'">⬇ Download Annotated Report (PDF)</button>
+
     </div>
 
+    <!-- 3 Stat Boxes -->
     <div class="stat-grid">
       <div class="stat-card">
         <div class="stat-lbl">Total Frames</div>
@@ -228,10 +242,10 @@ tbody td:first-child{font-weight:600;color:#fff}
       </div>
     </div>
 
-    <!-- Head Pose -->
+    <!-- Head Pose Live Status -->
     <div class="sec-head">
-      <h3>Head Pose Summary</h3>
-      <p>Last detected gaze direction from video</p>
+      <h3>Head Pose Monitoring</h3>
+      <p>Real-time gaze direction tracking</p>
     </div>
     <div class="pose-strip">
       <div class="dir-badge" id="dir-forward">👁 FORWARD</div>
@@ -239,13 +253,13 @@ tbody td:first-child{font-weight:600;color:#fff}
       <div class="dir-badge" id="dir-right">RIGHT →</div>
       <div class="dir-badge" id="dir-up">↑ UP</div>
       <div class="dir-badge" id="dir-down">↓ DOWN</div>
-      <div class="away-timer" id="awayTimer">Away Events: 0</div>
+      <div class="away-timer" id="awayTimer">Away: 0.0s</div>
     </div>
 
-    <!-- Evidence -->
+    <!-- Evidence Grid -->
     <div class="sec-head">
       <h3>Suspicious Activity Evidence</h3>
-      <p>Screenshots captured during suspicious events in the video</p>
+      <p>Screenshots and clips captured during suspicious events</p>
     </div>
     <div class="ev-grid" id="evGrid">
       <div class="ev-empty">No evidence captured yet.</div>
@@ -254,7 +268,7 @@ tbody td:first-child{font-weight:600;color:#fff}
     <!-- Student Analysis -->
     <div class="sec-head">
       <h3>Student Analysis</h3>
-      <p>Behavioral analysis from video</p>
+      <p>Behavioral analysis for tracked student</p>
     </div>
     <div class="table-wrap">
       <table>
@@ -268,12 +282,12 @@ tbody td:first-child{font-weight:600;color:#fff}
           </tr>
         </thead>
         <tbody id="studentTable">
-          <tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:28px">Upload video to see analysis</td></tr>
+          <tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:28px">Start session to see analysis</td></tr>
         </tbody>
       </table>
     </div>
 
-    <!-- Score Events -->
+    <!-- Score Events Pills -->
     <div class="sec-head">
       <h3>Score Events</h3>
       <p>Individual suspicious events with scores</p>
@@ -287,7 +301,7 @@ tbody td:first-child{font-weight:600;color:#fff}
       <h3>Event Timeline</h3>
     </div>
     <div class="timeline-box" id="timelineBox">
-      <div class="tl-item" style="color:var(--text-dim)">Waiting for video...</div>
+      <div class="tl-item" style="color:var(--text-dim)">Waiting for session...</div>
     </div>
 
     <!-- Audio -->
@@ -302,167 +316,29 @@ tbody td:first-child{font-weight:600;color:#fff}
 </div><!-- /page -->
 
 <script>
-// ── File selection ────────────────────────────────────────────
-function onFileSelected(){
-  const fi   = document.getElementById('videoFile');
-  const btn  = document.getElementById('analyzeBtn');
-  const name = document.getElementById('fileName');
-  if(fi.files.length){
-    name.textContent = '✅ ' + fi.files[0].name;
-    btn.disabled = false;
+let pollInterval = null;
+let currentDirection = "FORWARD";
 
-    // Preview video locally
-    const player = document.getElementById('videoPlayer');
-    player.src   = URL.createObjectURL(fi.files[0]);
-    player.style.display = 'block';
-  }
+function startSession(){
+  // Reset purana data (video upload ka) clear karo
+  fetch('/reset').then(() => {
+    fetch('/start');
+  });
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('analysisLabel').textContent = 'Session in progress — ' + new Date().toLocaleTimeString();
+  pollInterval = setInterval(fetchData, 1000);
+  fetchData();
 }
 
-// Drag & drop support
-const zone = document.getElementById('uploadZone');
-zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
-zone.addEventListener('dragleave', ()  => zone.classList.remove('drag'));
-zone.addEventListener('drop', e => {
-  e.preventDefault();
-  zone.classList.remove('drag');
-  const fi = document.getElementById('videoFile');
-  fi.files = e.dataTransfer.files;
-  onFileSelected();
-});
-
-// ── Start analysis ────────────────────────────────────────────
-function startSession(){
-  const fi = document.getElementById('videoFile');
-  if(!fi.files.length){ alert('Please select a video first!'); return; }
-
-  // Lock UI
-  document.getElementById('analyzeBtn').disabled = true;
-  document.getElementById('progressWrap').style.display = 'block';
-  document.getElementById('results').style.display = 'none';
-
-  // Animate progress bar (indeterminate feel)
-  let pct = 0;
-  const bar = document.getElementById('progressBar');
-  const pTxt = document.getElementById('progressText');
-  const fakeProgress = setInterval(() => {
-    pct = Math.min(pct + Math.random() * 3, 90);
-    bar.style.width = pct + '%';
-  }, 400);
-
-  const formData = new FormData();
-  formData.append('video', fi.files[0]);
-
-  // First reset, then upload+process
-  fetch('/reset').then(() => {
-    fetch('/upload_video', { method: 'POST', body: formData })
-      .then(res => {
-        if(!res.ok) throw new Error(`Server error ${res.status}`);
-        return res.json();
-      })
-      .then(d => {
-        clearInterval(fakeProgress);
-        bar.style.width = '100%';
-        pTxt.textContent = 'Analysis complete!';
-        setTimeout(() => {
-          document.getElementById('progressWrap').style.display = 'none';
-          populateResults(d);
-          document.getElementById('results').style.display = 'block';
-          document.getElementById('analyzeBtn').disabled = false;
-        }, 600);
-      })
-      .catch(err => {
-        clearInterval(fakeProgress);
-        document.getElementById('progressWrap').style.display = 'none';
-        document.getElementById('analyzeBtn').disabled = false;
-        alert('Error processing video: ' + err.message);
-      });
+function stopSession(){
+  clearInterval(pollInterval);
+  fetch('/stop').then(() => {
+    setTimeout(fetchData, 600);
+    document.getElementById('analysisLabel').textContent =
+      'Analysis complete — ' + new Date().toLocaleString();
   });
 }
 
-// ── Populate results from JSON ────────────────────────────────
-function populateResults(d){
-  document.getElementById('analysisLabel').textContent =
-    `Analysis complete — Risk Level: ${d.risk_level ?? 'LOW'} · ${new Date().toLocaleString()}`;
-
-  // Stats
-  document.getElementById('statFrames').textContent   = d.total_frames   ?? 0;
-  document.getElementById('statDuration').textContent = (d.session_duration ?? 0) + 's';
-  document.getElementById('statAlerts').textContent   = d.total_alerts    ?? 0;
-
-  // Head pose — show last detected direction
-  setBadge(d.current_direction ?? 'FORWARD');
-  const awayCount = (d.direction_log ?? []).length;
-  const timerEl   = document.getElementById('awayTimer');
-  timerEl.textContent = `Away Events: ${awayCount}`;
-  timerEl.className   = 'away-timer' + (awayCount > 3 ? ' warning' : '');
-
-  // Evidence grid
-  const ev     = (d.evidence ?? []).filter(e => e.type === 'screenshot');
-  const evGrid = document.getElementById('evGrid');
-  if(ev.length === 0){
-    evGrid.innerHTML = '<div class="ev-empty">No evidence captured.</div>';
-  } else {
-    evGrid.innerHTML = ev.slice(-12).reverse().map(e => {
-      const fname = e.path.replace(/\\/g, '/').split('/').pop();
-      const src   = `/evidence/${fname}`;
-      const meta  = `${e.event.replace(/_/g,' ')} · ${e.time_str}${e.direction ? ' · '+e.direction : ''}`;
-      return `<div class="ev-card" onclick="openLightbox('${src}','${meta}')">
-        <img src="${src}" onerror="this.parentElement.style.display='none'" alt="${e.event}"/>
-        <div class="ev-card-info">
-          <div class="ev-card-event">${e.event.replace(/_/g,' ')}</div>
-          <div class="ev-card-time">${e.time_str}${e.direction ? ' · '+e.direction : ''}</div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-
-  // Student analysis
-  const sa = d.student_analysis ?? {};
-  const [sevLabel, sevClass] = getSeverityBadge(d.risk_level ?? 'LOW');
-  document.getElementById('studentTable').innerHTML = `
-    <tr>
-      <td>Student 1</td>
-      <td>${sa.avg_score ?? 0}</td>
-      <td>${sa.max_score ?? d.score ?? 0}</td>
-      <td><span class="badge ${sevClass}">${sevLabel}</span></td>
-      <td>${sa.event_count ?? 0}</td>
-    </tr>`;
-
-  // Score event pills
-  const evts    = d.score_events ?? [];
-  const pillsEl = document.getElementById('scoreEvents');
-  pillsEl.innerHTML = evts.length === 0
-    ? '<span style="color:var(--text-dim);font-size:.82rem">No events detected</span>'
-    : evts.slice(-20).map(e =>
-        `<span class="score-pill">${e.event.replace(/_/g,' ')} +${e.pts} · ${e.time_str}</span>`
-      ).join('');
-
-  // Timeline
-  const tl    = d.timeline ?? [];
-  const tlBox = document.getElementById('timelineBox');
-  tlBox.innerHTML = tl.length === 0
-    ? '<div class="tl-item" style="color:var(--text-dim)">No events logged.</div>'
-    : tl.slice(-60).reverse().map(t => {
-        let cls = 'tl-item';
-        if(t.includes('⚠') && t.includes('pts'))           cls += ' tl-warn';
-        else if(t.includes('⚠'))                            cls += ' tl-alert';
-        else if(t.includes('👁') || t.includes('looking'))  cls += ' tl-pose';
-        else if(t.includes('🎤'))                            cls += ' tl-audio';
-        else if(t.includes('📸'))                            cls += ' tl-ss';
-        return `<div class="${cls}">${t}</div>`;
-      }).join('');
-
-  // Audio
-  const audio = d.audio ?? [];
-  const aBox  = document.getElementById('audioBox');
-  aBox.innerHTML = audio.length === 0
-    ? '<div class="audio-item" style="color:var(--text-dim)">No audio detected.</div>'
-    : audio.slice(-10).reverse().map(a =>
-        `<div class="audio-item">🎙 ${a}</div>`
-      ).join('');
-}
-
-// ── Helpers ───────────────────────────────────────────────────
 function setBadge(direction){
   ['forward','left','right','up','down'].forEach(d => {
     const el = document.getElementById('dir-'+d);
@@ -480,18 +356,125 @@ function getSeverityBadge(risk){
   return map[risk] || ['NORMAL','badge-low'];
 }
 
+function fetchData(){
+  fetch('/get_logs').then(r=>r.json()).then(d=>{
+
+    // Stat boxes
+    document.getElementById('statFrames').textContent   = d.total_frames  ?? 0;
+    document.getElementById('statDuration').textContent = (d.session_duration ?? 0) + 's';
+    document.getElementById('statAlerts').textContent   = d.total_alerts   ?? 0;
+
+    // Head pose badges — current_direction se live update
+    const dir = d.current_direction ?? 'FORWARD';
+    setBadge(dir);
+
+    // Away timer
+    const lastPose = d.direction_log && d.direction_log.length
+      ? d.direction_log[d.direction_log.length-1]
+      : null;
+    const timerEl = document.getElementById('awayTimer');
+    if(lastPose && dir !== 'FORWARD'){
+      timerEl.textContent = `Away: ${lastPose.away_sec}s`;
+      timerEl.className   = 'away-timer' + (lastPose.away_sec >= 5 ? ' warning' : '');
+    } else {
+      timerEl.textContent = 'Away: 0.0s';
+      timerEl.className   = 'away-timer';
+    }
+
+    // Evidence grid — fix image path
+    const ev     = d.evidence ?? [];
+    const evGrid = document.getElementById('evGrid');
+    const screenshots = ev.filter(e => e.type === 'screenshot');
+    if(screenshots.length === 0){
+      evGrid.innerHTML = '<div class="ev-empty">No evidence captured yet.</div>';
+    } else {
+      evGrid.innerHTML = screenshots.slice(-12).reverse().map(e => {
+        const imgPath = e.path.replace(/\\/g, '/');
+        const src     = `/evidence/${imgPath.split('/').pop()}`;
+        const meta    = `${e.event.replace(/_/g,' ')} · ${e.time_str}${e.direction ? ' · ' + e.direction : ''}`;
+        return `<div class="ev-card" onclick="openLightbox('${src}','${meta}')">
+          <img src="${src}" onerror="this.parentElement.style.display='none'" alt="${e.event}"/>
+          <div class="ev-card-info">
+            <div class="ev-card-event">${e.event.replace(/_/g,' ')}</div>
+            <div class="ev-card-time">${e.time_str}${e.direction ? ' · ' + e.direction : ''}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // Student analysis table
+    const sa = d.student_analysis ?? {};
+    const score = d.score ?? 0;
+    const [sevLabel, sevClass] = getSeverityBadge(d.risk_level ?? 'LOW');
+    document.getElementById('studentTable').innerHTML = `
+      <tr>
+        <td>Student 1</td>
+        <td>${sa.avg_score ?? 0}</td>
+        <td>${sa.max_score ?? score}</td>
+        <td><span class="badge ${sevClass}">${sevLabel}</span></td>
+        <td>${sa.event_count ?? 0}</td>
+      </tr>`;
+
+    // Score event pills
+    const evts = d.score_events ?? [];
+    const pillsEl = document.getElementById('scoreEvents');
+    if(evts.length === 0){
+      pillsEl.innerHTML = '<span style="color:var(--text-dim);font-size:.82rem">No events yet</span>';
+    } else {
+      pillsEl.innerHTML = evts.slice(-15).map(e =>
+        `<span class="score-pill">${e.event.replace(/_/g,' ')} +${e.pts} · ${e.time_str}</span>`
+      ).join('');
+    }
+
+    // Timeline
+    const tl = d.timeline ?? [];
+    const tlBox = document.getElementById('timelineBox');
+    if(tl.length === 0){
+      tlBox.innerHTML = '<div class="tl-item" style="color:var(--text-dim)">No events yet...</div>';
+    } else {
+      tlBox.innerHTML = tl.slice(-50).reverse().map(t => {
+        let cls = 'tl-item';
+        if(t.includes('⚠') && t.includes('pts'))      cls += ' tl-warn';
+        else if(t.includes('⚠'))                       cls += ' tl-alert';
+        else if(t.includes('👁') || t.includes('looking')) cls += ' tl-pose';
+        else if(t.includes('🎤'))                       cls += ' tl-audio';
+        else if(t.includes('📸'))                       cls += ' tl-ss';
+        return `<div class="${cls}">${t}</div>`;
+      }).join('');
+    }
+
+    // Audio
+    const audio  = d.audio ?? [];
+    const aBox   = document.getElementById('audioBox');
+    if(audio.length === 0){
+      aBox.innerHTML = '<div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>';
+    } else {
+      aBox.innerHTML = audio.slice(-10).reverse().map(a =>
+        `<div class="audio-item">🎙 ${a}</div>`).join('');
+    }
+
+  }).catch(()=>{});
+}
+
+fetchData();
+
 function openLightbox(src, meta){
   document.getElementById('lightboxImg').src  = src;
   document.getElementById('lightboxMeta').textContent = meta;
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
+
 function closeLightbox(){
   document.getElementById('lightbox').classList.remove('active');
   document.getElementById('lightboxImg').src = '';
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeLightbox(); });
+
+// ESC key se bhi band ho
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeLightbox();
+});
 </script>
 </body>
 </html>

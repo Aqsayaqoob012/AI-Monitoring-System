@@ -90,8 +90,9 @@ def _save_ss(frame, event, timestamp):
     timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] 📸 {event.replace('_',' ')}")
 
 # ── Stable Multiple Persons Check ─────────────────────────────
-def stable_multiple_persons(num_persons, lp_count, frame, current, frame_num=0):
-    if num_persons > 1:
+def stable_multiple_persons(num_persons, last_person_count, frame, current, frame_num=0):
+    MULTI_THRESHOLD = 1.5
+    if num_persons > 1 and num_persons - last_person_count >= MULTI_THRESHOLD:
         pts = fire_event("multiple_persons", frame_num)
         if pts:
             timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] ⚠ Multiple Persons ({num_persons})")
@@ -132,8 +133,8 @@ def process_frame(frame, current, frame_num=0, is_video=False):
 
     # 👤 PERSON
         if cls == PERSON_CLASS and conf > 0.5:
-            if area > 100000:   # ignore small false persons
-                num_persons += 1
+            num_persons += 1
+                
     
     # 📱 PHONE (SUPER STRICT 🔥)
         elif cls == PHONE_CLASS and conf > 0.7:
@@ -289,11 +290,11 @@ def process_video_file(video_path):
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("index.html")
 
 @app.route("/live")
 def live_page():
-    return render_template("index.html")
+    return render_template("live.html")
 
 @app.route("/upload_video")
 def upload_video_page():

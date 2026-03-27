@@ -1,451 +1,502 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Live Detection — Cheating Guard AI</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-:root {
-  --bg1:#0b1a2c; --bg2:#15173D;
-  --purple:#7c6ef9; --purple-dim:rgba(124,110,249,0.15);
-  --red:#e8453c; --red-dim:rgba(232,69,60,0.15);
-  --green:#2ecc71; --green-dim:rgba(46,204,113,0.15);
-  --yellow:#f0b429; --yellow-dim:rgba(240,180,41,0.15);
-  --card:rgba(255,255,255,0.04); --border:rgba(255,255,255,0.09);
-  --text:#ffffff; --text-dim:rgba(255,255,255,0.45);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="static/logo.png" type="image/png">
+  <title>AI MONITORING SYSTEM</title>
+  <style>
+    :root {
+      --bg-start: #0b1a2c; /* navy blue */
+      --bg-end: #15173D ;  /* dark purple */
+      --text-color: #ffffff;
+      --accent-color: #1f3b6f;
+      --btn-color: #1f3b6f;
+      --btn-hover: #0C2C55;
+      --btn-text: #fff;
+    }
+
+    [data-theme="light"] {
+      --bg-start: #f0f0f0;
+      --bg-end: #d0d0ff;
+      --text-color: #0b1a2c;
+      --accent-color: #4a90e2;
+      --btn-color: #4a90e2;
+      --btn-hover: #1f3b6f;
+      --btn-text: #fff;
+    }
+
+    /* Webkit Browsers: Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 12px; /* scrollbar thickness */
 }
-::-webkit-scrollbar{width:7px}
-::-webkit-scrollbar-track{background:rgba(11,26,44,.3);border-radius:10px}
-::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#1f3b6f,#4a90e2);border-radius:10px}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;scrollbar-width:thin;scrollbar-color:#4a90e2 rgba(11,26,44,.3)}
-body{background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);min-height:100vh}
-body::before{content:"";position:fixed;inset:0;background:linear-gradient(270deg,var(--bg1),var(--bg2));background-size:600% 600%;z-index:-1;animation:bgAnim 15s ease infinite}
-@keyframes bgAnim{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
 
-/* NAV */
-nav{display:flex;justify-content:space-between;align-items:center;padding:14px 48px;background:rgba(11,26,44,.85);backdrop-filter:blur(10px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
-nav::after{content:"";position:absolute;bottom:0;left:0;width:100%;height:3px;background:linear-gradient(270deg,#1f3b6f,var(--purple),#1f3b6f);background-size:400% 100%;animation:navLine 3s linear infinite}
-@keyframes navLine{0%,100%{background-position:0%}50%{background-position:100%}}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.1rem;background:linear-gradient(90deg,#7c6ef9,#4a90e2);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.logo img{width:34px;height:34px}
-.nav-links a{margin-left:22px;color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;font-weight:500;transition:color .2s}
-.nav-links a:hover{color:var(--purple)}
+::-webkit-scrollbar-track {
+  background: rgba(11,26,44,0.3); /* track color */
+  border-radius: 10px;
+}
 
-/* LAYOUT */
-.page{max-width:1200px;margin:0 auto;padding:28px 24px 60px}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1f3b6f, #4a90e2); /* gradient thumb */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
 
-/* HERO */
-.hero{text-align:center;padding:24px 0 20px}
-.hero h1{font-size:1.9rem;font-weight:700;background:linear-gradient(90deg,var(--purple),#4a90e2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
-.hero p{color:var(--text-dim);font-size:.92rem;margin-bottom:22px}
-.btn-row{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
-.btn{padding:10px 22px;font-size:.9rem;font-weight:600;border:none;border-radius:8px;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:7px}
-.btn-start{background:var(--purple);color:#fff}
-.btn-stop{background:rgba(255,255,255,.08);color:#fff;border:1px solid var(--border)}
-.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35)}
-.btn-start:hover{background:#6a5de8}
+/* Thumb hover effect */
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #4a90e2, #1f3b6f);
+  box-shadow: 0 0 10px rgba(74,144,226,0.5);
+}
 
-/* VIDEO */
-.video-wrap{display:flex;justify-content:center;margin:22px 0}
-#videoFeed{border-radius:14px;box-shadow:0 0 32px rgba(124,110,249,.25);border:1px solid rgba(124,110,249,.3);max-width:100%;display:none}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #4a90e2 rgba(11,26,44,0.3);
+}
 
-/* ═══════════════════════════════
-   DETECTION RESULTS
-═══════════════════════════════ */
-.results{display:none;margin-top:4px}
+  .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #333;
+    }
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+        .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 50%; 
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      color: #333;
+    }
+    .header-logo img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%; /* round shape */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+      border-radius: 50%; /* round shape */
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
 
-.results-head{margin-bottom:22px}
-.results-head h2{font-size:1.55rem;font-weight:700;margin-bottom:5px}
-.results-head p{font-size:.82rem;color:var(--text-dim)}
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Segoe UI', sans-serif; }
+    body {
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
+    }
 
-/* Download buttons */
-.dl-row{display:flex;gap:11px;margin-bottom:26px;flex-wrap:wrap}
-.btn-dl{padding:10px 20px;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;border:none;transition:all .25s;display:inline-flex;align-items:center;gap:8px}
-.btn-dl-purple{background:var(--purple);color:#fff}
-.btn-dl-outline{background:transparent;color:#fff;border:1px solid var(--border)}
-.btn-dl-purple:hover{background:#6a5de8;transform:translateY(-2px);box-shadow:0 6px 18px rgba(124,110,249,.35)}
-.btn-dl-outline:hover{border-color:var(--purple);color:var(--purple);transform:translateY(-2px)}
+    body::before {
+      content:"";
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background: linear-gradient(270deg, var(--bg-start), var(--bg-end));
+      background-size: 600% 600%;
+      z-index:-1;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
 
-/* 3 STAT BOXES */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:30px}
-@media(max-width:650px){.stat-grid{grid-template-columns:1fr}}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 26px;transition:transform .25s,box-shadow .25s}
-.stat-card:nth-child(2){border-color:rgba(124,110,249,.4);box-shadow:0 0 18px rgba(124,110,249,.12)}
-.stat-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(91,35,255,.2)}
-.stat-lbl{font-size:.75rem;font-weight:600;letter-spacing:.4px;color:var(--purple);text-transform:uppercase;margin-bottom:12px}
-.stat-val{font-size:2.7rem;font-weight:700;color:#fff;line-height:1}
-.stat-val.red{color:var(--red)}
-.stat-val.purple{color:var(--purple)}
+    /* Navbar */
+  nav {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 15px 50px;
+  background: rgba(11,26,44,0.8);
+  backdrop-filter: blur(8px);
+  position: sticky;
+  top:0;
+  z-index:10;
+  /* added for animated bottom line */
+  border-bottom: 4px solid transparent;
+  position: relative;
+}
 
-/* SECTION HEADER */
-.sec-head{margin-bottom:14px}
-.sec-head h3{font-size:1.1rem;font-weight:700;margin-bottom:3px}
-.sec-head p{font-size:.78rem;color:var(--text-dim)}
+nav::after {
+  content:"";
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background: linear-gradient(270deg, #1f3b6f, #4a90e2, #1f3b6f);
+  background-size: 600% 100%;
+  animation: navLineAnim 3s linear infinite;
+  border-radius: 2px;
+}
 
-/* HEAD POSE LIVE STATUS */
-.pose-strip{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
-.dir-badge{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;border:1px solid var(--border);background:var(--card);color:var(--text-dim);transition:all .3s}
-.dir-badge.active-left,.dir-badge.active-right{background:var(--red-dim);border-color:var(--red);color:var(--red)}
-.dir-badge.active-up{background:var(--yellow-dim);border-color:var(--yellow);color:var(--yellow)}
-.dir-badge.active-down{background:var(--red-dim);border-color:var(--red);color:var(--red)}
-.dir-badge.active-forward{background:var(--green-dim);border-color:var(--green);color:var(--green)}
-.away-timer{padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text-dim);margin-left:auto}
-.away-timer.warning{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+@keyframes navLineAnim {
+  0%{background-position:0% 0%}
+  50%{background-position:100% 0%}
+  100%{background-position:0% 0%}
+}
 
-/* EVIDENCE GRID */
-.ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;margin-bottom:30px}
-.ev-card{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
-.ev-card:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(91,35,255,.2)}
-.ev-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
-.ev-card-info{padding:8px 10px;border-top:1px solid var(--border)}
-.ev-card-event{font-size:.72rem;font-weight:600;color:var(--purple);text-transform:uppercase;margin-bottom:2px}
-.ev-card-time{font-size:.68rem;color:var(--text-dim)}
-.ev-empty{color:var(--text-dim);font-size:.88rem;padding:24px 0}
+    .logo {
+      display:flex;
+      align-items:center;
+      font-weight:bold;
+      font-size: 1.2rem;
+      color: var(--text-color);
+      background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: logoAnim 4s ease-in-out infinite alternate;
+    }
+    .logo img { width:40px; height:40px; margin-right:10px; }
+    @keyframes logoAnim { 0% { background-position:0% } 100% { background-position:100% } }
 
-/* STUDENT ANALYSIS TABLE */
-.table-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
-table{width:100%;border-collapse:collapse}
-thead tr{border-bottom:1px solid var(--border)}
-thead th{padding:13px 20px;text-align:left;font-size:.74rem;font-weight:600;letter-spacing:.3px;color:var(--purple);text-transform:uppercase}
-tbody tr{border-bottom:1px solid rgba(255,255,255,.05);transition:background .15s}
-tbody tr:last-child{border:none}
-tbody tr:hover{background:rgba(124,110,249,.06)}
-tbody td{padding:13px 20px;font-size:.86rem;color:rgba(255,255,255,.8)}
-tbody td:first-child{font-weight:600;color:#fff}
-.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:700;letter-spacing:.4px}
-.badge-low   {background:var(--green-dim);color:var(--green);border:1px solid rgba(46,204,113,.3)}
-.badge-medium{background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(240,180,41,.3)}
-.badge-high  {background:var(--red-dim);color:var(--red);border:1px solid rgba(232,69,60,.3)}
+    .nav-links a {
+      margin-left:30px;
+      color: var(--text-color);
+      text-decoration:none;
+      font-weight:600;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent-color); }
 
-/* SCORE EVENTS */
-.score-events{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
-.score-pill{padding:6px 14px;border-radius:20px;font-size:.75rem;font-weight:600;background:var(--purple-dim);color:var(--purple);border:1px solid rgba(124,110,249,.3)}
+    /* Hero Section */
+    .hero {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      height: 60vh;
+      padding: 0 20px;
+     
+    }
 
-/* TIMELINE */
-.timeline-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;max-height:280px;overflow-y:auto;margin-bottom:28px}
-.tl-item{font-size:.8rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);color:var(--text-dim);font-family:'Courier New',monospace}
-.tl-item:last-child{border:none}
-.tl-warn {color:var(--yellow);font-weight:600}
-.tl-alert{color:var(--red);font-weight:600}
-.tl-pose {color:#4a90e2}
-.tl-audio{color:var(--green)}
-.tl-ss   {color:rgba(255,255,255,.5)}
+    .hero h1 {
+      font-size:2.5rem;
+      color: var(--text-color);
+      margin-bottom:10px;
+      padding: 5px 10px;
+      border-radius:8px;
+       -webkit-text-stroke: 1px #111F35; /* edge line width + color */
+      background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: headingAnim 4s ease-in-out infinite alternate;
+    }
+    @keyframes headingAnim { 0% { background-position:0% } 100% { background-position:100% } }
 
-/* AUDIO BOX */
-.audio-box{background:var(--card);border:1px solid var(--border);border:1px solid rgba(46,204,113,.2);border-radius:14px;padding:16px 18px;max-height:180px;overflow-y:auto}
-.audio-item{font-size:.82rem;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);color:var(--text-dim)}
-.audio-item:last-child{border:none}
+    .hero p {
+      font-size:1rem;
+      color: var(--text-color);
+      max-width:550px;
+      margin-bottom:30px;
+    }
 
-/* LIGHTBOX */
-.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;cursor:pointer}
-.lightbox.active{display:flex}
-.lightbox-img{max-width:90vw;max-height:82vh;border-radius:14px;box-shadow:0 0 50px rgba(124,110,249,.5);border:1px solid rgba(124,110,249,.4);cursor:default}
-.lightbox-meta{color:rgba(255,255,255,.65);font-size:.85rem;text-align:center;letter-spacing:.3px}
-.lightbox-close{position:absolute;top:18px;right:24px;font-size:2.2rem;color:#fff;cursor:pointer;background:none;border:none;line-height:1;opacity:.6;transition:opacity .2s}
-.lightbox-close:hover{opacity:1}
-.lightbox-hint{position:absolute;bottom:22px;color:rgba(255,255,255,.35);font-size:.78rem}</style>
+  .hero button {
+  padding: 10px 25px;       /* chota size */
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--btn-color);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: none;          /* default me shadow nahi */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect */
+.hero button:hover {
+  background: linear-gradient(135deg, #1f3b6f, #4a90e2); /* gradient appear on hover */
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.5), 0 0 10px rgba(74,144,226,0.6); /* shadow appear on hover */
+}
+.hero button:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+  
+
+    @media(max-width:768px){
+      nav { flex-direction: column; }
+      .nav-links { margin-top:10px; }
+    }
+
+
+    .box-container {
+  display: grid;
+  grid-template-columns: repeat(3, 280px); /* har box fixed width */
+  gap: 30px;
+  justify-content: center; /* boxes center align horizontally */
+  padding: 50px 20px;
+}
+
+@media (max-width: 1000px) {
+  .box-container {
+    grid-template-columns: repeat(2, 280px); /* medium screens 2 per row */
+  }
+}
+
+@media (max-width: 700px) {
+  .box-container {
+    grid-template-columns: 1fr; /* mobile 1 per row */
+  }
+}
+
+.glass-box {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 25px 20px;
+  color: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.glass-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 8px #5B23FF;
+}
+
+.glass-box h3 {
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+  animation: gradientText 3s linear infinite alternate;
+}
+
+.glass-box p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 15px;
+}
+
+.glass-box ul {
+  list-style-type: disc;
+  margin-left: 20px;
+  color: #aaa;
+}
+
+@keyframes gradientText {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+
+
+/* Section Heading */
+.how-it-works {
+  padding: 50px 20px;
+  color: #fff;
+}
+
+.how-it-works h2 {
+  font-size: 2.2rem;
+  text-align: center;  /* sirf heading center */
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s linear infinite alternate;
+  margin-bottom: 50px;
+}
+
+/* Boxes Container */
+.steps-container {
+  display: flex;
+  flex-direction: column; /* ek line me 1 box */
+  gap: 25px;
+  align-items: center; /* container center, boxes khud left-align */
+  padding: 0 20px;
+}
+
+/* Individual Box */
+.step-box {
+  background: rgba(255,255,255,0.05);
+  border-left: 5px solid #5B23FF;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-right: 1px solid rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 15px 30px;
+  color: #fff;
+  width: 80%;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;  /* boxes ka text left-aligned */
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.step-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 5px #5B23FF;
+}
+
+.step-box .step-num {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #4a90e2;
+}
+
+.step-box h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  background: linear-gradient(90deg, #1f3b6f, #4a90e2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 3s linear infinite alternate;
+}
+
+.step-box p {
+  font-size: 0.95rem;
+  color: #ccc;
+  margin: 0;
+}
+
+@keyframes gradientText {
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+  </style>
 </head>
-<body>
-<nav>
-  <div class="logo">
-    <img src="https://img.icons8.com/ios-filled/50/ffffff/robot.png" alt="">
-    Cheating Guard AI
+<body data-theme="dark">
+<nav> 
+  <div class="logo" >
+   <!-- <img src="{{ url_for('static', filename='logo.png') }}" alt="logo"-->
+    
+    ExamShield AI
   </div>
   <div class="nav-links">
-    <a href="{{ url_for('home') }}">Home</a>
-    <a href="{{ url_for('live_page') }}">Live Detection</a>
-    <a href="#uploaded">Uploaded Video</a>
-    <a href="#history">History</a>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('live_page') }}">Live Detection</a> <!-- match the Flask route function name -->
+       <a href="{{ url_for('upload_video_page') }}">Uploaded Video</a>
   </div>
 </nav>
 
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox" onclick="closeLightbox()">
-  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="" onclick="event.stopPropagation()"/>
-  <div class="lightbox-meta" id="lightboxMeta"></div>
-  <div class="lightbox-hint">Click anywhere outside to close</div>
-</div>
+  <section class="hero" id="home">
+    <h1>AI Powered Online Monitoring</h1>
+    <p>AI Powered Online Monitoring is a smart system that continuously tracks real-time data and activities using AI. It detects suspicious patterns or anomalies and provides instant alerts, improving security and efficiency.
+</p>
+  </section>
 
-<div class="page">
-
-  <!-- HERO -->
-  <div class="hero">
-    <h1>Real-Time Cheat Detection Using Your Webcam</h1>
-    <p>Detects persons, phones, head pose and monitors audio in real-time.</p>
-    <div class="btn-row">
-      <button class="btn btn-start" onclick="startSession()">▶ Start Detection</button>
-      <button class="btn btn-stop"  onclick="stopSession()">⏹ Stop</button>
-    </div>
+  <section class="box-container">
+  <div class="glass-box">
+    <h3>Person Detection</h3>
+    <p>Detects presence of students in classroom and monitors attendance.</p>
+    <ul>
+      <li>Counts number of persons</li>
+      <li>Tracks movement</li>
+      <li>Alerts if unexpected entry</li>
+    </ul>
   </div>
 
-  <div class="video-wrap">
-    <img id="videoFeed" src="/video_feed" width="600" style="border-radius:14px; box-shadow:0 0 32px rgba(124,110,249,.25); border:1px solid rgba(124,110,249,.3); max-width:100%; display:block;"/>
+  <div class="glass-box">
+    <h3>Object Detection</h3>
+    <p>Detects objects like phones, books, laptops during the exam.</p>
+    <ul>
+      <li>Phone detection</li>
+      <li>Book detection</li>
+      <li>Laptop detection</li>
+    </ul>
   </div>
 
-  <!-- RESULTS -->
-  <div class="results" id="results" style="display:block">
+  <div class="glass-box">
+    <h3>Head Pose Detection</h3>
+    <p>Monitors attention by tracking head orientation and gaze direction.</p>
+    <ul>
+      <li>Detects looking away</li>
+      <li>Focus monitoring</li>
+      <li>Alert if inattentive</li>
+    </ul>
+  </div>
 
-    <div class="results-head">
-      <h2>Detection Results</h2>
-      <p id="analysisLabel">Session in progress...</p>
+  <div class="glass-box">
+    <h3>Face Missing / Leaving Frame</h3>
+    <p>Detects if a student leaves the camera frame or face is missing.</p>
+    <ul>
+      <li>Frame exit alert</li>
+      <li>Missing face detection</li>
+      <li>Continuous monitoring</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Audio Monitoring</h3>
+    <p>Continuously records audio and analyzes it in real time.
+</p>
+    <ul>
+      <li>Single/multiple voice detection</li>
+      <li>Suspicious noise alert</li>
+      <li>Real-time monitoring</li>
+    </ul>
+  </div>
+
+
+  <div class="glass-box">
+    <h3>Suspicious Activity / Score Engine</h3>
+    <p>Calculates risk score based on all detected anomalies in real-time.</p>
+    <ul>
+      <li>Activity scoring</li>
+      <li>Alerts generation</li>
+      <li>Threshold based notifications</li>
+    </ul>
+  </div>
+
+  <div class="glass-box">
+    <h3>Evidence & Report Generation</h3>
+    <p>Captures screenshots and generates post-exam report with all metrics.</p>
+    <ul>
+      <li>Screenshot capture of incidents</li>
+      <li>Reports generation</li>
+      <li>Risk summary & activity graph</li>
+    </ul>
+  </div>
+</section>
+
+<section class="how-it-works">
+  <h2>How it Works</h2>
+  <div class="steps-container">
+    <div class="step-box">
+      <div class="step-num">Step 1</div>
+      <h3>Upload Video</h3>
+      <p>Upload your classroom exam video in one click.</p>
     </div>
 
-    <!-- Download buttons -->
-    <div class="dl-row">
-      <button class="btn-dl btn-dl-purple" onclick="window.location.href='/download_report'">⬇ Download Annotated Report (PDF)</button>
-
+    <div class="step-box">
+      <div class="step-num">Step 2</div>
+      <h3>AI Processing</h3>
+      <p>AI analyzes the video using advanced computer vision.</p>
     </div>
 
-    <!-- 3 Stat Boxes -->
-    <div class="stat-grid">
-      <div class="stat-card">
-        <div class="stat-lbl">Total Frames</div>
-        <div class="stat-val" id="statFrames">0</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-lbl">Duration</div>
-        <div class="stat-val purple" id="statDuration">0s</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-lbl">Total Alerts</div>
-        <div class="stat-val red" id="statAlerts">0</div>
-      </div>
+    <div class="step-box">
+      <div class="step-num">Step 3</div>
+      <h3>Review Result</h3>
+      <p>Check detected events, person activity and risk score.</p>
     </div>
 
-    <!-- Head Pose Live Status -->
-    <div class="sec-head">
-      <h3>Head Pose Monitoring</h3>
-      <p>Real-time gaze direction tracking</p>
+    <div class="step-box">
+      <div class="step-num">Step 4</div>
+      <h3>Download & Export</h3>
+      <p>Export report with screenshots, activity summary & graph.</p>
     </div>
-    <div class="pose-strip">
-      <div class="dir-badge" id="dir-forward">👁 FORWARD</div>
-      <div class="dir-badge" id="dir-left">← LEFT</div>
-      <div class="dir-badge" id="dir-right">RIGHT →</div>
-      <div class="dir-badge" id="dir-up">↑ UP</div>
-      <div class="dir-badge" id="dir-down">↓ DOWN</div>
-      <div class="away-timer" id="awayTimer">Away: 0.0s</div>
-    </div>
+  </div>
+</section>
 
-    <!-- Evidence Grid -->
-    <div class="sec-head">
-      <h3>Suspicious Activity Evidence</h3>
-      <p>Screenshots and clips captured during suspicious events</p>
-    </div>
-    <div class="ev-grid" id="evGrid">
-      <div class="ev-empty">No evidence captured yet.</div>
-    </div>
 
-    <!-- Student Analysis -->
-    <div class="sec-head">
-      <h3>Student Analysis</h3>
-      <p>Behavioral analysis for tracked student</p>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Student ID</th>
-            <th>Avg Risk Score</th>
-            <th>Max Risk Score</th>
-            <th>Severity</th>
-            <th>Event Count</th>
-          </tr>
-        </thead>
-        <tbody id="studentTable">
-          <tr><td colspan="5" style="text-align:center;color:var(--text-dim);padding:28px">Start session to see analysis</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Score Events Pills -->
-    <div class="sec-head">
-      <h3>Score Events</h3>
-      <p>Individual suspicious events with scores</p>
-    </div>
-    <div class="score-events" id="scoreEvents">
-      <span style="color:var(--text-dim);font-size:.82rem">No events yet</span>
-    </div>
-
-    <!-- Timeline -->
-    <div class="sec-head" style="margin-top:8px">
-      <h3>Event Timeline</h3>
-    </div>
-    <div class="timeline-box" id="timelineBox">
-      <div class="tl-item" style="color:var(--text-dim)">Waiting for session...</div>
-    </div>
-
-    <!-- Audio -->
-    <div class="sec-head">
-      <h3>🎤 Audio Detections</h3>
-    </div>
-    <div class="audio-box" id="audioBox">
-      <div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>
-    </div>
-
-  </div><!-- /results -->
-</div><!-- /page -->
-
-<script>
-let pollInterval = null;
-let currentDirection = "FORWARD";
-
-function startSession(){
-  // Reset purana data (video upload ka) clear karo
-  fetch('/reset').then(() => {
-    fetch('/start');
-  });
-  document.getElementById('results').style.display = 'block';
-  document.getElementById('analysisLabel').textContent = 'Session in progress — ' + new Date().toLocaleTimeString();
-  pollInterval = setInterval(fetchData, 1000);
-  fetchData();
-}
-
-function stopSession(){
-  clearInterval(pollInterval);
-  fetch('/stop').then(() => {
-    setTimeout(fetchData, 600);
-    document.getElementById('analysisLabel').textContent =
-      'Analysis complete — ' + new Date().toLocaleString();
-  });
-}
-
-function setBadge(direction){
-  ['forward','left','right','up','down'].forEach(d => {
-    const el = document.getElementById('dir-'+d);
-    el.className = 'dir-badge';
-    if(d === direction.toLowerCase()) el.classList.add('active-'+d);
-  });
-}
-
-function getSeverityBadge(risk){
-  const map = {
-    'LOW':    ['NORMAL', 'badge-low'],
-    'MEDIUM': ['MEDIUM', 'badge-medium'],
-    'HIGH':   ['HIGH',   'badge-high'],
-  };
-  return map[risk] || ['NORMAL','badge-low'];
-}
-
-function fetchData(){
-  fetch('/get_logs').then(r=>r.json()).then(d=>{
-
-    // Stat boxes
-    document.getElementById('statFrames').textContent   = d.total_frames  ?? 0;
-    document.getElementById('statDuration').textContent = (d.session_duration ?? 0) + 's';
-    document.getElementById('statAlerts').textContent   = d.total_alerts   ?? 0;
-
-    // Head pose badges — current_direction se live update
-    const dir = d.current_direction ?? 'FORWARD';
-    setBadge(dir);
-
-    // Away timer
-    const lastPose = d.direction_log && d.direction_log.length
-      ? d.direction_log[d.direction_log.length-1]
-      : null;
-    const timerEl = document.getElementById('awayTimer');
-    if(lastPose && dir !== 'FORWARD'){
-      timerEl.textContent = `Away: ${lastPose.away_sec}s`;
-      timerEl.className   = 'away-timer' + (lastPose.away_sec >= 5 ? ' warning' : '');
-    } else {
-      timerEl.textContent = 'Away: 0.0s';
-      timerEl.className   = 'away-timer';
-    }
-
-    // Evidence grid — fix image path
-    const ev     = d.evidence ?? [];
-    const evGrid = document.getElementById('evGrid');
-    const screenshots = ev.filter(e => e.type === 'screenshot');
-    if(screenshots.length === 0){
-      evGrid.innerHTML = '<div class="ev-empty">No evidence captured yet.</div>';
-    } else {
-      evGrid.innerHTML = screenshots.slice(-12).reverse().map(e => {
-        const imgPath = e.path.replace(/\\/g, '/');
-        const src     = `/evidence/${imgPath.split('/').pop()}`;
-        const meta    = `${e.event.replace(/_/g,' ')} · ${e.time_str}${e.direction ? ' · ' + e.direction : ''}`;
-        return `<div class="ev-card" onclick="openLightbox('${src}','${meta}')">
-          <img src="${src}" onerror="this.parentElement.style.display='none'" alt="${e.event}"/>
-          <div class="ev-card-info">
-            <div class="ev-card-event">${e.event.replace(/_/g,' ')}</div>
-            <div class="ev-card-time">${e.time_str}${e.direction ? ' · ' + e.direction : ''}</div>
-          </div>
-        </div>`;
-      }).join('');
-    }
-
-    // Student analysis table
-    const sa = d.student_analysis ?? {};
-    const score = d.score ?? 0;
-    const [sevLabel, sevClass] = getSeverityBadge(d.risk_level ?? 'LOW');
-    document.getElementById('studentTable').innerHTML = `
-      <tr>
-        <td>Student 1</td>
-        <td>${sa.avg_score ?? 0}</td>
-        <td>${sa.max_score ?? score}</td>
-        <td><span class="badge ${sevClass}">${sevLabel}</span></td>
-        <td>${sa.event_count ?? 0}</td>
-      </tr>`;
-
-    // Score event pills
-    const evts = d.score_events ?? [];
-    const pillsEl = document.getElementById('scoreEvents');
-    if(evts.length === 0){
-      pillsEl.innerHTML = '<span style="color:var(--text-dim);font-size:.82rem">No events yet</span>';
-    } else {
-      pillsEl.innerHTML = evts.slice(-15).map(e =>
-        `<span class="score-pill">${e.event.replace(/_/g,' ')} +${e.pts} · ${e.time_str}</span>`
-      ).join('');
-    }
-
-    // Timeline
-    const tl = d.timeline ?? [];
-    const tlBox = document.getElementById('timelineBox');
-    if(tl.length === 0){
-      tlBox.innerHTML = '<div class="tl-item" style="color:var(--text-dim)">No events yet...</div>';
-    } else {
-      tlBox.innerHTML = tl.slice(-50).reverse().map(t => {
-        let cls = 'tl-item';
-        if(t.includes('⚠') && t.includes('pts'))      cls += ' tl-warn';
-        else if(t.includes('⚠'))                       cls += ' tl-alert';
-        else if(t.includes('👁') || t.includes('looking')) cls += ' tl-pose';
-        else if(t.includes('🎤'))                       cls += ' tl-audio';
-        else if(t.includes('📸'))                       cls += ' tl-ss';
-        return `<div class="${cls}">${t}</div>`;
-      }).join('');
-    }
-
-    // Audio
-    const audio  = d.audio ?? [];
-    const aBox   = document.getElementById('audioBox');
-    if(audio.length === 0){
-      aBox.innerHTML = '<div class="audio-item" style="color:var(--text-dim)">No audio detected yet.</div>';
-    } else {
-      aBox.innerHTML = audio.slice(-10).reverse().map(a =>
-        `<div class="audio-item">🎙 ${a}</div>`).join('');
-    }
-
-  }).catch(()=>{});
-}
-
-fetchData();
-
-function openLightbox(src, meta){
-  document.getElementById('lightboxImg').src  = src;
-  document.getElementById('lightboxMeta').textContent = meta;
-  document.getElementById('lightbox').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('active');
-  document.getElementById('lightboxImg').src = '';
-  document.body.style.overflow = '';
-}
-
-// ESC key se bhi band ho
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') closeLightbox();
-});
-</script>
 </body>
 </html>
