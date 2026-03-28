@@ -596,4 +596,5 @@ def download_json():
 
 if __name__ == "__main__":
     running = False
-    app.run(debug=True, use_reloader=False)
+    # app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
