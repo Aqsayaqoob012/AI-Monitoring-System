@@ -595,5 +595,6 @@ def download_json():
 
 
 if __name__ == "__main__":
-    running = False
-    app.run(debug=True, use_reloader=False)
+    pass
+    #running = False
+    # app.run(debug=True, use_reloader=False)
