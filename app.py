@@ -92,12 +92,14 @@ def _save_ss(frame, event, timestamp):
 
 # ── Stable Multiple Persons Check ─────────────────────────────
 def stable_multiple_persons(num_persons, last_person_count, frame, current, frame_num=0):
-    MULTI_THRESHOLD = 1.5
-    if num_persons > 1 and num_persons - last_person_count >= MULTI_THRESHOLD:
+    # Fix: previously used float threshold (1.5) against integer diff — never triggered.
+    # Now: fire event whenever more than 1 person is detected (regardless of previous count).
+    if num_persons > 1:
         pts = fire_event("multiple_persons", frame_num)
         if pts:
-            timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] ⚠ Multiple Persons ({num_persons})")
+            timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] ⚠ Multiple Persons Detected ({num_persons} people)  +{pts} pts  |  Score: {get_score()}")
             ev_save(frame, "multiple_persons")
+            start_clip(frame, "multiple_persons")
     return num_persons
 
 # ── Shared frame processing logic ────────────────────────────
@@ -122,28 +124,24 @@ def process_frame(frame, current, frame_num=0, is_video=False):
     h, w, _ = frame.shape
     center_x, center_y = w // 2, h // 2
 
+    # Bug fix 1: loop was outside results — now correctly nested
+    # Bug fix 2: indentation fixed so if/elif are inside the for loop
     for r_box in results:
-       boxes = r_box.boxes
+        boxes = r_box.boxes
+        for i in range(len(boxes)):
+            cls  = int(boxes.cls[i])
+            conf = float(boxes.conf[i])
+            x1, y1, x2, y2 = boxes.xyxy[i]
+            area = (x2 - x1) * (y2 - y1)
 
-    for i in range(len(boxes)):
-        cls  = int(boxes.cls[i])
-        conf = float(boxes.conf[i])
+            # 👤 PERSON
+            if cls == PERSON_CLASS and conf > 0.5:
+                num_persons += 1
 
-        x1, y1, x2, y2 = boxes.xyxy[i]
-        area = (x2 - x1) * (y2 - y1)
-
-    # 👤 PERSON
-        if cls == PERSON_CLASS and conf > 0.5:
-            num_persons += 1
-                
-    
-        # phone(strict filter)
-        elif cls == PHONE_CLASS and conf > 0.6:
-            # center position check
-            box_center_x = int((x1 + x2) / 2)
-
-            if area < 50000:   # 👈 IMPORTANT (tune kar sakti ho)
-               phone_detected = True
+            # 📱 PHONE (strict filter)
+            elif cls == PHONE_CLASS and conf > 0.6:
+                if area < 50000:
+                    phone_detected = True
 
     
     # ── Person tracking ────────────────────────────
@@ -309,6 +307,64 @@ def video_feed():
         running = True
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+# ── Audio extraction from video file ─────────────────────────
+def extract_audio_from_video(video_path):
+    import subprocess, wave, contextlib
+
+    audio_path = video_path.rsplit(".", 1)[0] + "_audio.wav"
+
+    try:
+        subprocess.run([
+            "ffmpeg", "-y", "-i", video_path,
+            "-vn", "-acodec", "pcm_s16le",
+            "-ar", "16000", "-ac", "1",
+            audio_path
+        ], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] ⚠ Audio extraction failed — install ffmpeg or video has no audio")
+        return
+
+    try:
+        with contextlib.closing(wave.open(audio_path, 'r')) as wf:
+            duration_sec = wf.getnframes() / float(wf.getframerate())
+    except Exception:
+        timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] ⚠ Could not read extracted audio")
+        return
+
+    chunk_sec   = 10
+    local_r     = sr.Recognizer()
+    chunk_start = 0
+
+    while chunk_start < duration_sec:
+        chunk_end = min(chunk_start + chunk_sec, duration_sec)
+        try:
+            with sr.AudioFile(audio_path) as source:
+                audio_chunk = local_r.record(source, offset=chunk_start, duration=chunk_end - chunk_start)
+            txt = local_r.recognize_google(audio_chunk)
+            if txt.strip():
+                if any('؀' <= c <= 'ۿ' for c in txt):
+                    txt = urdu_to_roman(txt)
+                detected_sentences.append(txt)
+                pts = fire_event("voice_detected")
+                if pts:
+                    timeline_logs.append(
+                        f"[{time.strftime('%H:%M:%S')}] 🎤 Voice @ {chunk_start:.0f}s: \"{txt}\"  +{pts} pts"
+                    )
+        except sr.UnknownValueError:
+            pass
+        except sr.RequestError:
+            timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] ⚠ Google Speech API error")
+            break
+        except Exception:
+            pass
+        chunk_start += chunk_sec
+
+    try:
+        os.remove(audio_path)
+    except Exception:
+        pass
+
+
 # ── POST: receive video, process fully, return JSON ──────────
 @app.route("/upload_video", methods=["POST"])
 def upload_video():
@@ -324,7 +380,11 @@ def upload_video():
     # Reset everything before processing
     _do_reset()
 
-    # Process video synchronously so we can return results immediately
+    # Step 1: Extract and analyse audio
+    timeline_logs.append(f"[{time.strftime('%H:%M:%S')}] 🎤 Analysing audio track...")
+    extract_audio_from_video(video_path)
+
+    # Step 2: Process video frames (YOLO + Head Pose)
     video_cap  = cv2.VideoCapture(video_path)
     fps        = video_cap.get(cv2.CAP_PROP_FPS) or 25
     frame_num  = 0
@@ -595,6 +655,4 @@ def download_json():
 
 
 if __name__ == "__main__":
-    pass
-    #running = False
-    # app.run(debug=True, use_reloader=False)
+    app.run(debug=True, use_reloader=False)
