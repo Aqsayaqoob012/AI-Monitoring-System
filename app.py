@@ -653,6 +653,5 @@ def download_json():
                      download_name=f"report_{time.strftime('%Y%m%d_%H%M%S')}.json",
                      mimetype='application/json')
 
-
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=7860, debug=False)

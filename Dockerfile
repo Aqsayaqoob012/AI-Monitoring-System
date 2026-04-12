@@ -8,9 +8,12 @@ ENV PYTHONUNBUFFERED=1
 # Step 3: Set work directory
 WORKDIR /app
 
-# Step 4: Install system dependencies
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# System dependencies
 RUN apt-get update && apt-get install -y \
-    build-essential \
     ffmpeg \
     libsm6 \
     libxext6 \
@@ -18,16 +21,15 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Step 5: Copy requirements and install
+# Install Python deps
 COPY requirements.txt .
-RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Step 6: Copy project files
+# Copy code
 COPY . .
 
-# Step 7: Expose Flask port
-EXPOSE 5000
+# HuggingFace requires port 7860
+EXPOSE 7860
 
-# Step 8: Run the app
-CMD ["python", "app.py"]
+# Run with gunicorn (BEST PRACTICE)
+CMD ["gunicorn", "-b", "0.0.0.0:7860", "app:app"]
